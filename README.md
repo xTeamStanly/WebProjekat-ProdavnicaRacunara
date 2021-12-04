@@ -4,7 +4,6 @@ Ovo je projekat za potrebe premeta "Web Programiranje" na trećoj godini Elektro
 <br/>
 
 ## Obaveštenja
----
 - Pre pokretanja veoma je poželjno dodati sve podatke u bazu (`0 - SVE ZAJEDNO.sql`).
 - Backend
   - .NET CORE 5
