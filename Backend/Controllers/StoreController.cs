@@ -104,6 +104,19 @@ namespace WebProjekat.Controller {
         }
 
         /* ------------------------------------ READ ------------------------------------ */
+        [Route("GetStores")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> GetStores() {
+            try {
+                var prodavnice = await Context.Stores.ToListAsync();
+                return Ok(prodavnice);
+            } catch(Exception e) {
+                return BadRequest(e.Message);
+            }
+        }
+
         [Route("GetStore/ID/{ID}")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]

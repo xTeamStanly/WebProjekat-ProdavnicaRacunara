@@ -28,18 +28,23 @@ namespace WebProjekat {
 
             services.AddDbContext<ProdavnicaRacunaraContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ProdavnicaRacunaraCS")));
 
-            //CORS
+            // CORS
             services.AddCors(options => {
                 options.AddPolicy("CORS", builder => {
                     builder.WithOrigins(new string[] {
                         "http://localhost:8080",
-                        "https://localhost:8080",
-                        "http://127.0.0.1:8080",
-                        "https://127.0.0.1:8080",
-                        "http://127.0.0.1:5500",
                         "http://localhost:5500",
+                        "http://localhost:5500/*",
+                        "https://localhost:8080",
+                        "https://localhost:5500",
+                        "https://localhost:5500/*",
+
+                        "http://127.0.0.1:8080",
+                        "http://127.0.0.1:5500",
+                        "http://127.0.0.1:5500/*",
+                        "https://127.0.0.1:8080",
                         "https://127.0.0.1:5500",
-                        "https://localhost:5500"
+                        "https://127.0.0.1:5500/*"
                     }).AllowAnyHeader().AllowAnyMethod();
                 });
             });
@@ -51,8 +56,10 @@ namespace WebProjekat {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+
+            app.UseCors("CORS");
+
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();

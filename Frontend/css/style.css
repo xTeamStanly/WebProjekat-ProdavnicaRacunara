@@ -1,0 +1,123 @@
+:root {
+    --pocetniGradijent: linear-gradient(190deg, rgba(90,161,240,1) 0%, rgba(114,121,248,1) 100%);
+}
+
+.select_div {
+    text-align: center;
+}
+
+select {
+    border-radius: 5px;
+    background-color: lightgrey;
+}
+
+select:hover {
+    border-radius: 10px;
+    background-color: lightcyan;
+}
+
+.select_div > select {
+    width: 100%;
+    height: 10vh;
+    text-align: center;
+    font-size: x-large;
+    border-radius: 5px;
+}
+
+
+.informacije {
+    border: 3px solid black;
+    background: var(--pocetniGradijent);
+}
+
+.naslov {
+    /* background-color: #f05a5a; */
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+.adresa {
+    /* background-color: #72f872; */
+    text-align: center;
+    font-size: larger;
+    font-style: italic;
+}
+
+.kontrole {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.kontrolaNaslov {
+    text-align: center;
+}
+
+.kontrola {
+    margin: 2px;
+    border: 1px solid black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#main {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+}
+
+table, tr, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.container {
+    width: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.list {
+    background-color: lightcoral;
+    border: 1px solid black;
+}
+
+.info {
+    background-color: lightgray;
+}
+
+.description {
+    margin: 5px;
+
+    text-align: center;
+
+    background-color: lightgray;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.title {
+    margin: 10px;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.address {
+    margin: 5px;
+    padding: 0px;
+    font-style: italic;
+}
