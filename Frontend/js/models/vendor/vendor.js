@@ -1,4 +1,4 @@
-import { fetchData, renderData } from "../../tools.js";
+import { fetchData, formatError, renderData } from "../../tools.js";
 
 export default class Vendor {
     constructor(ID, JMBG, Name, MiddleName, Surname, Gender, Salary, BirthDate, Address, Contacts, VendorPurchases, Node) {
@@ -9,54 +9,110 @@ export default class Vendor {
         this.Surname = Surname;
         this.Gender = Gender;
         this.Salary = Salary;
-        this.BirthDate = BirthDate;
+        this.BirthDate = new Date(BirthDate);
         this.Address = Address;
         this.Contacts = Contacts;
         this.VendorPurchases = VendorPurchases;
+
         this.Node = Node;
+        this.StoreID = null;
     }
 
+    static validacija = (jmbg, ime, srednjeime, prezime, pol, adresa) => {
+        if(!jmbg || !ime || !prezime || !pol || !adresa) { return false; }
+
+        let regexJmbg = new RegExp('^[1-9][0-9]{12}$'); //moze staticki posto je isti
+        if(regexJmbg.test(jmbg) == false) { return false; };
+
+        let regexPol = new RegExp('Ž|M'); //moze staticki
+        if(regexPol.test(pol) == false) { return false; }
+
+        if(ime.length > 32 || prezime.length > 32) { return false; }
+
+        if(srednjeime && srednjeime.length > 2) { return false; }
+        if(adresa && adresa.length > 65) { return false; }
+
+        return true;
+    }
+
+    async reload() {
+        if(!this.ID) { return; }
+        await this.fetchVendor();
+        this.render();
+    }
 
     async fetchVendor() {
-        if(!this.ID) { return; }
+        try {
+            const data = await fetchData(`https://localhost:5001/Vendor/GetVendor/ID/${this.ID}`);
+            ['JMBG', 'Name', 'MiddleName', 'Surname', 'Gender', 'Salary', 'BirthDate', 'Address', 'Contacts'].forEach((i) => {
 
-        const fetched = await fetchData(`https://localhost:5001/Vendor/GetVendor/ID/${this.ID}`);
+                if(i === 'MiddleName') {
+                    this[i] = data['middleName'];
+                } else if(i === 'BirthDate') {
+                    let datum = new Date(data['birthDate']);
+                    this[i] = datum;
+                } else {
+                    this[i] = data[i.toLowerCase()];
+                }
 
-        ['JMBG', 'Name', 'MiddleName', 'Surname', 'Gender', 'Salary', 'BirthDate', 'Address', 'Contacts'].forEach((i) => { this[i] = fetched[i.toLowerCase()]; });
+            });
+        } catch(ex) { formatError(ex); }
     }
 
-    draw() {
+    render() {
+        if(!this.Node) { return; }
 
-        let table = document.createElement('table');
-        let tableHeaders = document.createElement('tr');
-        ['Property', 'Value'].forEach((i) => {
+        let final = document.createElement('div');
+        final.appendChild(document.createElement('br'));
+        let tabela = document.createElement('table');
+        final.appendChild(tabela);
+        tabela.className = 'prodavacTabela';
+
+        // tabela sa hederima
+        let tabelaHederi = document.createElement('tr');
+        ['Svojstvo', 'Vrednost'].forEach((i) => {
             let kolona = document.createElement('th');
             kolona.innerText = i;
-            table.appendChild(kolona);
+            tabelaHederi.appendChild(kolona);
         });
-        table.appendChild(tableHeaders);
+        tabela.append(tabelaHederi);
+        // let tableHeaders = document.createElement('tr');
+        // ['Property', 'Value'].forEach((i) => {
+        //     let kolona = document.createElement('th');
+        //     kolona.innerText = i;
+        //     table.appendChild(kolona);
+        // });
+        // table.appendChild(tableHeaders);
 
-        ['JMBG', 'Name', 'MiddleName', 'Surname', 'Gender', 'Salary', 'BirthDate', 'Address', 'Contacts'].forEach((i) => {
+        let prevodi = ['JMBG', 'Ime', 'Srednje slovo', 'Prezime', 'Pol', 'Plata', 'Datum rođenja', 'Adresa', 'Kontakt']; //moze staticko
+        ['JMBG', 'Name', 'MiddleName', 'Surname', 'Gender', 'Salary', 'BirthDate', 'Address', 'Contacts'].forEach((svojstvo, i) => {
             let red = document.createElement('tr');
-            let left = document.createElement('td'); left.innerText = i;
 
-            let rightData = this[i];
-            if(rightData === undefined) { rightData = "/"; }
+            let naziv = document.createElement('td');
+            naziv.innerText = prevodi[i];
 
-            let right = document.createElement('td');
-
-            if(i === 'Contacts') {
-                right.innerText = rightData.toString().split(',').join('\n');
+            let vrednost = document.createElement('td');
+            let vrednostPodatak = this[svojstvo] ?? '/';
+            if(svojstvo === 'Contacts') {
+                if(!vrednost || vrednost !== '/') {
+                    vrednost.innerText = vrednostPodatak.join('\n');
+                } else {
+                    vrednost.innerText = vrednostPodatak.join('\n');
+                }
+            } else if(svojstvo === 'BirthDate') {
+                vrednost.innerText = vrednostPodatak.toUTCString();
             } else {
-                right.innerText = rightData;
+                vrednost.innerText = vrednostPodatak;
             }
-            red.appendChild(left);
-            red.appendChild(right);
 
-            table.appendChild(red);
+            red.appendChild(naziv);
+            red.appendChild(vrednost);
+
+            tabela.appendChild(red);
         });
 
-        renderData(table, this.Node);
-
+        renderData(final, this.Node);
     }
+
+
 }

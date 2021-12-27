@@ -1,11 +1,11 @@
 import { firstStore } from "./data.js";
-import { fetchData } from "./tools.js";
+import { fetchData, formatError } from "./tools.js";
 
 const setup = async () => {
     try {
 
         const prodavniceOpcije = await fetchData("https://localhost:5001/Store/GetStores");
-        if(!prodavniceOpcije || prodavniceOpcije.length < 1) { alert("Nema prodavnica!"); return; }
+        if(!prodavniceOpcije || prodavniceOpcije.length < 1) { formatError("Nema prodavnica!"); return; }
 
         //glavni div
         let glavniDiv = document.createElement('div'); glavniDiv.className = 'glavni';
@@ -48,7 +48,7 @@ const setup = async () => {
         //todo dodaj drugu prodavnicu
 
     } catch(ex) {
-        alert(ex);
+        formatError(ex);
     }
 };
 

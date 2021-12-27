@@ -2,13 +2,24 @@
     --pocetniGradijent: linear-gradient(190deg, rgba(90,161,240,1) 0%, rgba(114,121,248,1) 100%);
 }
 
+body {
+    background-color: lightsteelblue;
+}
+
+table, th, tr, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th { font-weight: bold; background-color: lightgrey; }
+
 .select_div {
     text-align: center;
 }
 
 select {
     border-radius: 5px;
-    background-color: lightgrey;
+    background-color: lightblue;
 }
 
 select:hover {
@@ -42,82 +53,56 @@ select:hover {
     text-align: center;
     font-size: larger;
     font-style: italic;
+    color: white;
 }
 
 .kontrole {
     display: flex;
+    flex: 0 1 auto;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
 .kontrolaNaslov {
+    background-color: #f05a5a;
     text-align: center;
+    font-weight: bold;
+    padding: 5px;
+
 }
 
+.kontrola > button {
+    width: 100%;
+    height: 30px;
+}
+.kontrola > button:hover { color: blue; font-weight: bold; }
+
 .kontrola {
+    width: 300px;
     margin: 2px;
     border: 1px solid black;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-#main {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-content: space-around;
-}
-
-table, tr, td, th {
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-
-.container {
+.prodavacTabela {
     width: 100%;
-
-    display: flex;
-    flex-wrap: wrap;
-
-}
-
-.list {
-    background-color: lightcoral;
-    border: 1px solid black;
-}
-
-.info {
-    background-color: lightgray;
-}
-
-.description {
-    margin: 5px;
-
     text-align: center;
-
-    background-color: lightgray;
-    border: 1px solid gray;
-    border-radius: 5px;
+    background-color: lightcyan;
+    font-size: large;
 }
 
-.title {
-    margin: 10px;
-    font-size: larger;
+.forma > form > * { width: 98%; }
+
+.forma { text-align: center; }
+
+.forma > form > label {
+    font-size: large;
     font-weight: bold;
 }
 
-.address {
-    margin: 5px;
-    padding: 0px;
-    font-style: italic;
-}
+.submitDugme { font-weight: bold; font-size: medium; height: 30px; }
+.submitDugme:hover { color: purple; border-radius: 10px; }
+
+input:hover { font-weight: bold; border-radius: 10px; }
+
+
