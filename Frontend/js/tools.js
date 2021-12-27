@@ -18,14 +18,10 @@ const pickRandomFromArray = (array) => {
 }
 
 //http response => err message
-const formatErrorResponse = async (res) => {
-    alert(`Kod: ${res.status}\nPoruka: ${await res.text()}`);
-}
+const formatErrorResponse = async (res) => { alert(`Kod: ${res.status}\nPoruka: ${await res.text()}`); }
 
 //err message
-const formatError = (errorMessage) => {
-    alert(`Greska: ${errorMessage}`);
-}
+const formatError = (errorMessage) => { alert(`Greska: ${errorMessage}`); }
 
 export {
     fetchData,

@@ -76,13 +76,6 @@ export default class Vendor {
             tabelaHederi.appendChild(kolona);
         });
         tabela.append(tabelaHederi);
-        // let tableHeaders = document.createElement('tr');
-        // ['Property', 'Value'].forEach((i) => {
-        //     let kolona = document.createElement('th');
-        //     kolona.innerText = i;
-        //     table.appendChild(kolona);
-        // });
-        // table.appendChild(tableHeaders);
 
         let prevodi = ['JMBG', 'Ime', 'Srednje slovo', 'Prezime', 'Pol', 'Plata', 'Datum rođenja', 'Adresa', 'Kontakt']; //moze staticko
         ['JMBG', 'Name', 'MiddleName', 'Surname', 'Gender', 'Salary', 'BirthDate', 'Address', 'Contacts'].forEach((svojstvo, i) => {
@@ -97,7 +90,7 @@ export default class Vendor {
                 if(!vrednost || vrednost !== '/') {
                     vrednost.innerText = vrednostPodatak.join('\n');
                 } else {
-                    vrednost.innerText = vrednostPodatak.join('\n');
+                    vrednost.innerText = vrednostPodatak;
                 }
             } else if(svojstvo === 'BirthDate') {
                 vrednost.innerText = vrednostPodatak.toUTCString();
@@ -113,6 +106,4 @@ export default class Vendor {
 
         renderData(final, this.Node);
     }
-
-
 }
