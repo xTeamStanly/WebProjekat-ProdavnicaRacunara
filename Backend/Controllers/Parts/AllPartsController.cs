@@ -44,13 +44,13 @@ namespace WebProjekat.Controller.Parts {
             });
 
             List<Object> finalRam = new List<object>();
-            var ram = await Context.GraphicsCards.ToListAsync();
+            var ram = await Context.RAMs.ToListAsync();
             ram.ForEach(i => {
                 finalRam.Add(new { id = i.ID, name = $"{i.Manufacturer} {i.Model}" });
             });
 
             List<Object> finalMaticne = new List<object>();
-            var maticne = await Context.GraphicsCards.ToListAsync();
+            var maticne = await Context.Motherboards.ToListAsync();
             maticne.ForEach(i => {
                 finalMaticne.Add(new { id = i.ID, name = $"{i.Manufacturer} {i.Model}" });
             });

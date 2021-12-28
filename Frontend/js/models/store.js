@@ -125,12 +125,7 @@ export default class Store {
         infoKupacKonfig.onclick = async (ev) => { /*TODO: samo prikazi kad je bila kupovina koji je naziv konfiguracije i koji clan je prodao i kad*/ console.log('info + config'); }
         kupacDiv.appendChild(infoKupacKonfig);
 
-        //todo dodaj jos dugmica (info (alert JMBG) i kupovine (alert JMBG))
-
         kontrole.appendChild(kupacDiv);
-
-
-
 
         // === konfiguracija ===
         let konfiguracijaDiv = document.createElement('div');
@@ -219,9 +214,6 @@ export default class Store {
 
 
     }
-
-
-    //todo dodaj delete and fire radnika
 
     // === forma za dodavanje radnika ===
     async renderDodajRadnika() {
@@ -398,6 +390,182 @@ export default class Store {
         forma.appendChild(labelaJMBG);
         forma.appendChild(document.createElement('br'));
         forma.appendChild(inputJMBG);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(document.createElement('br'));
+
+        let submit = document.createElement('input');
+        submit.type = 'submit'; submit.className = 'submitDugme';
+        submit.value = 'Pošalji';
+        forma.appendChild(submit);
+
+        formaDiv.appendChild(forma);
+        renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+
+    // === forma za uredjivanje radnika ===
+    async renderUrediRadnika() {
+        if(!this.Node) { formatError("Null node!"); return; }
+
+        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+        let forma = document.createElement('form');
+        forma.appendChild(document.createElement('br'));
+        forma.onsubmit = async (ev) => {
+            ev.preventDefault();
+
+            let jmbg = inputJMBG.value;
+            let regexJmbg = new RegExp('^[1-9][0-9]{12}$'); //moze staticki posto je isti
+            if(regexJmbg.test(jmbg) == false) { formatError('Validacija neuspešna!'); return; }
+
+            try {
+                let res = await fetch(`https://localhost:5001/Vendor/GetVendor/JMBG/${jmbg}`);
+                if(!res.ok) { await formatErrorResponse(res); return; }
+                res = await res.json();
+
+                let infoRadnik = new Vendor(
+                    res.id,
+                    res.jmbg,
+                    res.name,
+                    res.middleName,
+                    res.surname,
+                    res.gender,
+                    res.salary,
+                    res.birthDate,
+                    res.address,
+                    res.contacts,
+                    res.vendorPurchases,
+                    this.Node.querySelector('.platno')
+                );
+
+                //pozovi drugi deo i prosledi objekat radnika
+                await this.renderUrediRadnikaDrugiDeo(infoRadnik);
+            } catch(ex) {
+                formatError(ex);
+            }
+        }
+
+        let labelaJMBG = document.createElement('label'); labelaJMBG.innerText = "JMBG";
+        let inputJMBG = document.createElement('input');
+        inputJMBG.maxLength = 13;
+        forma.appendChild(labelaJMBG);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputJMBG);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(document.createElement('br'));
+
+        let submit = document.createElement('input');
+        submit.type = 'submit'; submit.className = 'submitDugme';
+        submit.value = 'Pošalji';
+        forma.appendChild(submit);
+
+        formaDiv.appendChild(forma);
+        renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+    async renderUrediRadnikaDrugiDeo(radnik) {
+        if(!this.Node) { formatError("Null node!"); return; }
+
+        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+        let forma = document.createElement('form');
+        forma.appendChild(document.createElement('br'));
+        forma.method = 'post';
+        forma.onsubmit = async (ev) => {
+            ev.preventDefault();
+
+            let jmbg = inputJMBG.value;
+            let name = inputIme.value;
+            let middle = inputSrednjeSlovo.value;
+            let surname = inputPrezime.value;
+            let gender = inputPol.value;
+            let salary = Number.parseFloat(inputPlata.value);
+            let birthDate = inputRodj.valueAsDate.toISOString();
+            let address = inputAdresa.value;
+
+            let obj = { id: radnik.ID, jmbg, name, middle, surname, gender, salary, birthDate, address, contacts: null, vendorPurchases: null }
+
+            if(Vendor.validacija(jmbg, name, middle, surname, gender, address) == false || salary < 50000) { formatError("Validacija neuspešna"); return; }
+
+            try {
+                let res1 = await fetch('https://localhost:5001/Vendor/UpdateVendor', {
+                    method: 'put',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(obj)
+                });
+                if(!res1.ok) { await formatErrorResponse(res1); return; }
+
+                alert("Uspešno!");
+
+                await this.reloadData();
+            } catch(ex) { formatError(ex); }
+        }
+
+        let labelaJMBG = document.createElement('label'); labelaJMBG.innerText = 'JMBG';
+        let inputJMBG = document.createElement('input'); inputJMBG.value = radnik.JMBG; inputJMBG.disabled = true;
+        inputJMBG.maxLength = 13;
+        inputJMBG.name = 'jmbg';
+        forma.appendChild(labelaJMBG);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputJMBG);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaIme = document.createElement('label'); labelaIme.innerText = 'Ime';
+        let inputIme = document.createElement('input'); inputIme.value = radnik.Name;
+        inputIme.maxLength = 32;
+        inputIme.name = 'name';
+        forma.appendChild(labelaIme);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputIme);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaSrednjeSlovo = document.createElement('label'); labelaSrednjeSlovo.innerText = 'Srednje slovo';
+        let inputSrednjeSlovo = document.createElement('input'); if(radnik.MiddleName) { inputSrednjeSlovo.value = radnik.MiddleName; }
+        inputSrednjeSlovo.maxLength = 2;
+        inputSrednjeSlovo.name = 'middleName';
+        forma.appendChild(labelaSrednjeSlovo);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputSrednjeSlovo);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaPrezime = document.createElement('label'); labelaPrezime.innerText = 'Prezime';
+        let inputPrezime = document.createElement('input'); inputPrezime.value = radnik.Surname;
+        inputPrezime.maxLength = 32;
+        inputPrezime.name = 'surname';
+        forma.appendChild(labelaPrezime);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputPrezime);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaPol = document.createElement('label'); labelaPol.innerText = 'Pol';
+        let inputPol = document.createElement('select'); inputPol.name = 'gender';
+        let opcija1 = document.createElement('option'); opcija1.innerText = 'Odaberite pol'; opcija1.value = 'invalid';
+        let opcija2 = document.createElement('option'); opcija2.innerText = 'M'; opcija2.value = 'M';
+        let opcija3 = document.createElement('option'); opcija3.innerText = 'Ž'; opcija3.value = 'Ž';
+        inputPol.appendChild(opcija1); inputPol.appendChild(opcija2); inputPol.appendChild(opcija3);
+        forma.appendChild(labelaPol);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputPol);
+        forma.appendChild(document.createElement('br'));
+
+        inputPol.selectedIndex = (radnik.Gender == "M") ? 1 : 2;
+
+
+        let labelaPlata = document.createElement('label'); labelaPlata.innerText = 'Plata';
+        let inputPlata = document.createElement('input'); inputPlata.name = 'salary'; inputPlata.value = radnik.Salary;
+        forma.appendChild(labelaPlata);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputPlata);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaRodj = document.createElement('label'); labelaRodj.innerText = 'Datum rođenja';
+        let inputRodj = document.createElement('input'); inputRodj.type = 'date'; inputRodj.name = 'birthDate'; inputRodj.valueAsDate = radnik.BirthDate;
+        forma.appendChild(labelaRodj);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputRodj);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaAdresa = document.createElement('label'); labelaAdresa.innerText = 'Adresa';
+        let inputAdresa = document.createElement('input'); inputAdresa.name = 'address'; inputAdresa.value = radnik.Address;
+        forma.appendChild(labelaAdresa);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputAdresa);
         forma.appendChild(document.createElement('br'));
         forma.appendChild(document.createElement('br'));
 
@@ -616,185 +784,131 @@ export default class Store {
         renderData(formaDiv, this.Node.querySelector('.platno'));
     }
 
-    async renderUrediRadnika() {
-        if(!this.Node) { formatError("Null node!"); return; }
-
-        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
-        let forma = document.createElement('form');
-        forma.appendChild(document.createElement('br'));
-        forma.onsubmit = async (ev) => {
-            ev.preventDefault();
-
-            let jmbg = inputJMBG.value;
-            let regexJmbg = new RegExp('^[1-9][0-9]{12}$'); //moze staticki posto je isti
-            if(regexJmbg.test(jmbg) == false) { formatError('Validacija neuspešna!'); return; }
-
-            try {
-                let res = await fetch(`https://localhost:5001/Vendor/GetVendor/JMBG/${jmbg}`);
-                if(!res.ok) { await formatErrorResponse(res); return; }
-                res = await res.json();
-
-                let infoRadnik = new Vendor(
-                    res.id,
-                    res.jmbg,
-                    res.name,
-                    res.middleName,
-                    res.surname,
-                    res.gender,
-                    res.salary,
-                    res.birthDate,
-                    res.address,
-                    res.contacts,
-                    res.vendorPurchases,
-                    this.Node.querySelector('.platno')
-                );
-
-                //pozovi drugi deo i prosledi objekat radnika
-                await this.renderUrediRadnikaDrugiDeo(infoRadnik);
-            } catch(ex) {
-                formatError(ex);
-            }
-        }
-
-        let labelaJMBG = document.createElement('label'); labelaJMBG.innerText = "JMBG";
-        let inputJMBG = document.createElement('input');
-        inputJMBG.maxLength = 13;
-        forma.appendChild(labelaJMBG);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(inputJMBG);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(document.createElement('br'));
-
-        let submit = document.createElement('input');
-        submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
-        forma.appendChild(submit);
-
-        formaDiv.appendChild(forma);
-        renderData(formaDiv, this.Node.querySelector('.platno'));
-    }
-    async renderUrediRadnikaDrugiDeo(radnik) {
-        if(!this.Node) { formatError("Null node!"); return; }
-
-        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
-        let forma = document.createElement('form');
-        forma.appendChild(document.createElement('br'));
-        forma.method = 'post';
-        forma.onsubmit = async (ev) => {
-            ev.preventDefault();
-
-            let jmbg = inputJMBG.value;
-            let name = inputIme.value;
-            let middle = inputSrednjeSlovo.value;
-            let surname = inputPrezime.value;
-            let gender = inputPol.value;
-            let salary = Number.parseFloat(inputPlata.value);
-            let birthDate = inputRodj.valueAsDate.toISOString();
-            let address = inputAdresa.value;
-
-            let obj = { id: radnik.ID, jmbg, name, middle, surname, gender, salary, birthDate, address, contacts: null, vendorPurchases: null }
-
-            if(Vendor.validacija(jmbg, name, middle, surname, gender, address) == false || salary < 50000) { formatError("Validacija neuspešna"); return; }
-
-            try {
-                let res1 = await fetch('https://localhost:5001/Vendor/UpdateVendor', {
-                    method: 'put',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(obj)
-                });
-                if(!res1.ok) { await formatErrorResponse(res1); return; }
-
-                alert("Uspešno!");
-
-                await this.reloadData();
-            } catch(ex) { formatError(ex); }
-        }
-
-        let labelaJMBG = document.createElement('label'); labelaJMBG.innerText = 'JMBG';
-        let inputJMBG = document.createElement('input'); inputJMBG.value = radnik.JMBG; inputJMBG.disabled = true;
-        inputJMBG.maxLength = 13;
-        inputJMBG.name = 'jmbg';
-        forma.appendChild(labelaJMBG);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(inputJMBG);
-        forma.appendChild(document.createElement('br'));
-
-        let labelaIme = document.createElement('label'); labelaIme.innerText = 'Ime';
-        let inputIme = document.createElement('input'); inputIme.value = radnik.Name;
-        inputIme.maxLength = 32;
-        inputIme.name = 'name';
-        forma.appendChild(labelaIme);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(inputIme);
-        forma.appendChild(document.createElement('br'));
-
-        let labelaSrednjeSlovo = document.createElement('label'); labelaSrednjeSlovo.innerText = 'Srednje slovo';
-        let inputSrednjeSlovo = document.createElement('input'); if(radnik.MiddleName) { inputSrednjeSlovo.value = radnik.MiddleName; }
-        inputSrednjeSlovo.maxLength = 2;
-        inputSrednjeSlovo.name = 'middleName';
-        forma.appendChild(labelaSrednjeSlovo);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(inputSrednjeSlovo);
-        forma.appendChild(document.createElement('br'));
-
-        let labelaPrezime = document.createElement('label'); labelaPrezime.innerText = 'Prezime';
-        let inputPrezime = document.createElement('input'); inputPrezime.value = radnik.Surname;
-        inputPrezime.maxLength = 32;
-        inputPrezime.name = 'surname';
-        forma.appendChild(labelaPrezime);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(inputPrezime);
-        forma.appendChild(document.createElement('br'));
-
-        let labelaPol = document.createElement('label'); labelaPol.innerText = 'Pol';
-        let inputPol = document.createElement('select'); inputPol.name = 'gender';
-        let opcija1 = document.createElement('option'); opcija1.innerText = 'Odaberite pol'; opcija1.value = 'invalid';
-        let opcija2 = document.createElement('option'); opcija2.innerText = 'M'; opcija2.value = 'M';
-        let opcija3 = document.createElement('option'); opcija3.innerText = 'Ž'; opcija3.value = 'Ž';
-        inputPol.appendChild(opcija1); inputPol.appendChild(opcija2); inputPol.appendChild(opcija3);
-        forma.appendChild(labelaPol);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(inputPol);
-        forma.appendChild(document.createElement('br'));
-
-        inputPol.selectedIndex = (radnik.Gender == "M") ? 1 : 2;
-
-
-        let labelaPlata = document.createElement('label'); labelaPlata.innerText = 'Plata';
-        let inputPlata = document.createElement('input'); inputPlata.name = 'salary'; inputPlata.value = radnik.Salary;
-        forma.appendChild(labelaPlata);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(inputPlata);
-        forma.appendChild(document.createElement('br'));
-
-        let labelaRodj = document.createElement('label'); labelaRodj.innerText = 'Datum rođenja';
-        let inputRodj = document.createElement('input'); inputRodj.type = 'date'; inputRodj.name = 'birthDate'; inputRodj.valueAsDate = radnik.BirthDate;
-        forma.appendChild(labelaRodj);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(inputRodj);
-        forma.appendChild(document.createElement('br'));
-
-        let labelaAdresa = document.createElement('label'); labelaAdresa.innerText = 'Adresa';
-        let inputAdresa = document.createElement('input'); inputAdresa.name = 'address'; inputAdresa.value = radnik.Address;
-        forma.appendChild(labelaAdresa);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(inputAdresa);
-        forma.appendChild(document.createElement('br'));
-        forma.appendChild(document.createElement('br'));
-
-        let submit = document.createElement('input');
-        submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
-        forma.appendChild(submit);
-
-        formaDiv.appendChild(forma);
-        renderData(formaDiv, this.Node.querySelector('.platno'));
+    napraviSelectOpciju(sadrzaj, vrednost) {
+        let opcija = document.createElement('option');
+        opcija.innerText = sadrzaj;
+        opcija.value = (!vrednost) ? -1 : vrednost;
+        return opcija;
     }
 
-    //todo render forma za dodavanje konfiguracije
     async renderDodajKonfiguraciju() {
-        //todo: uzmi prvo sve serijske brojeve svih procesora
-        //todo2: ili samo radi preko serijskih brojeva
+        if(!this.Node) { formatError('Null node!'); return; }
+        try {
+            let opcijeZaKontole = await fetch('https://localhost:5001/AllParts/GetAllParts');
+            if(!opcijeZaKontole.ok) { await formatErrorResponse(opcijeZaKontole); }
+            opcijeZaKontole = await opcijeZaKontole.json();
+
+            //validacija da li ima dovoljno komponenti u bazi
+            if(
+                !opcijeZaKontole.cpu || opcijeZaKontole.cpu.length < 1 ||
+                !opcijeZaKontole.gpu || opcijeZaKontole.gpu.length < 1 ||
+                !opcijeZaKontole.ram || opcijeZaKontole.ram.length < 1 ||
+                !opcijeZaKontole.mb || opcijeZaKontole.mb.length < 1 ||
+                !opcijeZaKontole.storage || opcijeZaKontole.storage.length < 1
+            ) { formatError("Nema dovoljno komponenti"); return; }
+
+            // === popunjavanje selektova ===
+            let selectProcesor = document.createElement('select');
+            selectProcesor.appendChild(this.napraviSelectOpciju("Odaberite procesor"));
+            opcijeZaKontole.cpu.forEach(i => { selectProcesor.appendChild(this.napraviSelectOpciju(i.name, i.id)); });
+
+            let selectGraficka = document.createElement('select');
+            selectGraficka.appendChild(this.napraviSelectOpciju("Odaberite grafičku"));
+            opcijeZaKontole.gpu.forEach(i => { selectGraficka.appendChild(this.napraviSelectOpciju(i.name, i.id)); });
+
+            let selectRam = document.createElement('select');
+            selectRam.appendChild(this.napraviSelectOpciju("Odaberite RAM"));
+            opcijeZaKontole.ram.forEach(i => { selectRam.appendChild(this.napraviSelectOpciju(i.name, i.id)); })
+
+            let selectMaticna = document.createElement('select');
+            selectMaticna.appendChild(this.napraviSelectOpciju("Odaberite matičnu"));
+            opcijeZaKontole.mb.forEach(i => { selectMaticna.appendChild(this.napraviSelectOpciju(i.name, i.id)); });
+
+            let selectSkladiste = document.createElement('select');
+            selectSkladiste.appendChild(this.napraviSelectOpciju("Odaberite skladište"));
+            opcijeZaKontole.storage.forEach(i => { selectSkladiste.appendChild(this.napraviSelectOpciju(i.name, i.id)); });
+
+            console.log(opcijeZaKontole);
+
+            let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+            let forma = document.createElement('form');
+            forma.appendChild(document.createElement('br'));
+            forma.method = 'post';
+            forma.onsubmit = async (ev) => {
+                ev.preventDefault();
+
+                let ime = inputIme.value;
+                let cpuID = Number.parseInt(selectProcesor.value);
+                let gpuID = Number.parseInt(selectGraficka.value);
+                let ramID = Number.parseInt(selectRam.value);
+                let mbID = Number.parseInt(selectMaticna.value);
+                let storageID = Number.parseInt(selectSkladiste.value);
+
+                if(Configuration.validacija(ime, cpuID, gpuID, ramID, mbID, storageID) == false) { formatError("Validacija neuspešna"); return; }
+
+                try {
+                    let res = await fetch(`https://localhost:5001/Configuration/AddConfiguration/${ime}/CPU/${cpuID}/GPU/${gpuID}/RAM/${ramID}/MB/${mbID}/STORAGE/${storageID}`, {
+                        method: 'post',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({})
+                    });
+                    if(!res.ok) { await formatErrorResponse(res); return; }
+
+                    alert("Uspešno!");
+
+                } catch(ex) {
+                    formatError(ex);
+                }
+            }
+
+            let labelaIme = document.createElement('label'); labelaIme.innerText = "Naziv";
+            let inputIme = document.createElement('input'); inputIme.maxLength = 64;
+            forma.appendChild(labelaIme);
+            forma.appendChild(document.createElement('br'));
+            forma.appendChild(inputIme);
+            forma.appendChild(document.createElement('br'));
+
+            let labelaProcesor = document.createElement('label'); labelaProcesor.innerText = "Procesor";
+            forma.appendChild(labelaProcesor);
+            forma.appendChild(document.createElement('br'));
+            forma.appendChild(selectProcesor);
+            forma.appendChild(document.createElement('br'));
+
+            let labelaGraficka = document.createElement('label'); labelaGraficka.innerText = "Grafička";
+            forma.appendChild(labelaGraficka);
+            forma.appendChild(document.createElement('br'));
+            forma.appendChild(selectGraficka);
+            forma.appendChild(document.createElement('br'));
+
+            let labelaRam = document.createElement('label'); labelaRam.innerText = "RAM";
+            forma.appendChild(labelaRam);
+            forma.appendChild(document.createElement('br'));
+            forma.appendChild(selectRam);
+            forma.appendChild(document.createElement('br'));
+
+            let labelaMaticna = document.createElement('label'); labelaMaticna.innerText = "Matična";
+            forma.appendChild(labelaMaticna);
+            forma.appendChild(document.createElement('br'));
+            forma.appendChild(selectMaticna);
+            forma.appendChild(document.createElement('br'));
+
+            let labelaSkladiste = document.createElement('label'); labelaSkladiste.innerText = "Skladište";
+            forma.appendChild(labelaSkladiste);
+            forma.appendChild(document.createElement('br'));
+            forma.appendChild(selectSkladiste);
+            forma.appendChild(document.createElement('br'));
+            forma.appendChild(document.createElement('br'));
+
+            let submit = document.createElement('input');
+            submit.type = 'submit'; submit.className = 'submitDugme';
+            submit.value = 'Pošalji';
+            forma.appendChild(submit);
+
+            formaDiv.appendChild(forma);
+            renderData(formaDiv, this.Node.querySelector('.platno'));
+
+        } catch(ex) { formatError(ex); }
+
     }
 
     async renderInfoKonfiguracuja() {
