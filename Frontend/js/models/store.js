@@ -1,5 +1,11 @@
 import { fetchData, formatError, formatErrorResponse, pickRandomFromArray, renderData } from "../tools.js";
+import Configuration from "./configuration.js";
 import Customer from "./customer/customer.js";
+import GraphicsCard from "./parts/graphicsCard.js";
+import Motherboard from "./parts/motherboard.js";
+import Processor from "./parts/processor.js";
+import RAM from "./parts/ram.js";
+import Storage from "./parts/storage.js";
 import Vendor from "./vendor/vendor.js";
 
 export default class Store {
@@ -83,6 +89,11 @@ export default class Store {
         infoRadnik.onclick = async (ev) => { await this.renderInfoRadnik(); }
         radnikDiv.appendChild(infoRadnik);
 
+        let obrisiRadnika = document.createElement('button');
+        obrisiRadnika.innerText = 'Obriši globalnog radnika';
+        obrisiRadnika.onclick = async (ev) => { await this.renderObrisiRadnika(); }
+        radnikDiv.appendChild(obrisiRadnika);
+
         kontrole.appendChild(radnikDiv);
 
 
@@ -105,10 +116,9 @@ export default class Store {
         kupacDiv.appendChild(infoKupac);
 
         let infoKupacKonfig = document.createElement('button');
-        infoKupacKonfig.innerText = 'Informacije o kupcu i konfiguracije';
-        infoKupacKonfig.onclick = async (ev) => { /*TODO: aaa*/ console.log('info + config'); }
+        infoKupacKonfig.innerText = 'Informacije o kupcu i njegovim kupovinama';
+        infoKupacKonfig.onclick = async (ev) => { /*TODO: samo prikazi kad je bila kupovina koji je naziv konfiguracije i koji clan je prodao i kad*/ console.log('info + config'); }
         kupacDiv.appendChild(infoKupacKonfig);
-
 
         //todo dodaj jos dugmica (info (alert JMBG) i kupovine (alert JMBG))
 
@@ -127,12 +137,14 @@ export default class Store {
 
         let dodajKonfiguraciju = document.createElement('button');
         dodajKonfiguraciju.innerText = 'Dodaj konfiguraciju';
-        dodajKonfiguraciju.onclick = async (ev) => {
-            console.log('dodaj konfiguraciju');
-            //todo render forma za dodavanje konfiguracije
-        }
-
+        dodajKonfiguraciju.onclick = async (ev) => { await this.renderDodajKonfiguraciju(); }
         konfiguracijaDiv.appendChild(dodajKonfiguraciju);
+
+        let infoKonfiguracija = document.createElement('button');
+        infoKonfiguracija.innerText = 'Informacije o konfiguraciji';
+        infoKonfiguracija.onclick = async (ev) => { await this.renderInfoKonfiguracuja(); }
+        konfiguracijaDiv.appendChild(infoKonfiguracija);
+
         kontrole.appendChild(konfiguracijaDiv);
 
 
@@ -172,8 +184,19 @@ export default class Store {
         if(!platnoDiv) {
             platnoDiv = document.createElement('div');
             platnoDiv.className = 'platno';
+
+            let dobrodosliDiv = document.createElement('div');
+            dobrodosliDiv.className = 'dobrodosli';
+            dobrodosliDiv.innerText = '😀 Dobrodošli 😀';
+            platnoDiv.appendChild(dobrodosliDiv);
+
+
             this.Node.appendChild(platnoDiv);
         }
+
+
+
+
 
         // === pretvaranje json u vendor objekat ===
         let oldVendors = [];
@@ -187,6 +210,9 @@ export default class Store {
             await vendor.fetchVendor();
             this.Vendors.push(vendor);
         });
+
+
+
     }
 
 
@@ -332,7 +358,6 @@ export default class Store {
 
             let jmbg = inputJMBG.value;
             let regexJmbg = new RegExp('^[1-9][0-9]{12}$'); //moze staticki posto je isti
-            console.log(jmbg);
             if(regexJmbg.test(jmbg) == false) { formatError('Validacija neuspešna!'); return; }
 
             try {
@@ -357,6 +382,57 @@ export default class Store {
 
                 infoRadnik.render();
 
+            } catch(ex) {
+                formatError(ex);
+            }
+        }
+
+        let labelaJMBG = document.createElement('label'); labelaJMBG.innerText = "JMBG";
+        let inputJMBG = document.createElement('input');
+        inputJMBG.maxLength = 13;
+        forma.appendChild(labelaJMBG);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputJMBG);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(document.createElement('br'));
+
+        let submit = document.createElement('input');
+        submit.type = 'submit'; submit.className = 'submitDugme';
+        submit.value = 'Pošalji';
+        forma.appendChild(submit);
+
+        formaDiv.appendChild(forma);
+        renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+
+    // === forma za brisanje radnika ===
+    async renderObrisiRadnika() {
+        if(!this.Node) { formatError('Null node!'); return; }
+
+        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+        let forma = document.createElement('form');
+        forma.appendChild(document.createElement('br'));
+        forma.onsubmit = async (ev) => {
+            ev.preventDefault();
+
+            let jmbg = inputJMBG.value;
+            let regexJmbg = new RegExp('^[1-9][0-9]{12}$'); //moze staticki posto je isti
+            if(regexJmbg.test(jmbg) == false) { formatError('Validacija neuspešna!'); return; }
+
+            try {
+                let res = await fetch(`https://localhost:5001/Vendor/GetVendor/JMBG/${jmbg}`);
+                if(!res.ok) { await formatErrorResponse(res); return; }
+                res = await res.json();
+
+                let vendorID = res.id;
+
+                res = await fetch(`https://localhost:5001/Vendor/DeleteVendor/ID/${vendorID}`, {
+                    method: 'delete'
+                });
+
+                if(!res.ok) { await formatErrorResponse(res); return; }
+
+                alert("Uspešno!");
             } catch(ex) {
                 formatError(ex);
             }
@@ -533,5 +609,110 @@ export default class Store {
         formaDiv.appendChild(forma);
         renderData(formaDiv, this.Node.querySelector('.platno'));
     }
+
+    //todo render forma za dodavanje konfiguracije
+    async renderDodajKonfiguraciju() {
+
+    }
+
+    async renderInfoKonfiguracuja() {
+        if(!this.Node) { formatError("Null node!"); return; }
+
+        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+        let forma = document.createElement('form');
+        forma.appendChild(document.createElement('br'));
+        forma.onsubmit = async (ev) => {
+            ev.preventDefault();
+
+            let ime = inputIme.value;
+            if(!ime) { formatError('Validacija neuspešna!'); return; }
+
+            try {
+                let res = await fetch(`https://localhost:5001/Configuration/GetConfiguration/Name/${ime}`);
+                if(!res.ok) { await formatErrorResponse(res); return; }
+                res = await res.json();
+
+                let procesor = new Processor(
+                    res.cpu.id,
+                    res.cpu.serialNumber,
+                    res.cpu.manufacturer,
+                    res.cpu.model,
+                    res.cpu.price,
+                    res.cpu.frequencyGHz,
+                    res.cpu.cores
+                );
+
+                let graficka = new GraphicsCard(
+                    res.gpu.id,
+                    res.gpu.serialNumber,
+                    res.gpu.manufacturer,
+                    res.gpu.model,
+                    res.gpu.price,
+                    res.gpu.memoryGB
+                );
+
+                let maticna = new Motherboard(
+                    res.mb.id,
+                    res.mb.serialNumber,
+                    res.mb.manufacturer,
+                    res.mb.model,
+                    res.mb.price
+                );
+
+                let ram = new RAM(
+                    res.ram.id,
+                    res.ram.serialNumber,
+                    res.ram.manufacturer,
+                    res.ram.model,
+                    res.ram.price,
+                    res.ram.memoryGB,
+                    res.ram.frequencyMHz
+                );
+
+                let skladiste = new Storage(
+                    res.storage.id,
+                    res.storage.serialNumber,
+                    res.storage.manufacturer,
+                    res.storage.model,
+                    res.storage.price,
+                    res.storage.memoryGB
+                );
+
+                let infoKonfig = new Configuration(
+                    res.id,
+                    res.name,
+                    procesor,
+                    graficka,
+                    ram,
+                    maticna,
+                    skladiste,
+                    this.Node.querySelector('.platno')
+                );
+
+                infoKonfig.render();
+            } catch(ex) {
+                formatError(ex);
+            }
+        }
+
+        let labelaIme = document.createElement('label'); labelaIme.innerText = "Naziv konfiguracije";
+        let inputIme = document.createElement('input');
+        inputIme.maxLength = 64;
+        forma.appendChild(labelaIme);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputIme);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(document.createElement('br'));
+
+        let submit = document.createElement('input');
+        submit.type = 'submit'; submit.className = 'submitDugme';
+        submit.value = 'Pošalji';
+        forma.appendChild(submit);
+
+        formaDiv.appendChild(forma);
+        renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+
+
 
 }

@@ -1,4 +1,4 @@
-import { firstStore, secondStore } from "./data.js";
+import { firstStore, secondStore, thirdStore } from "./data.js";
 import { fetchData, formatError } from "./tools.js";
 
 const setup = async () => {
@@ -23,7 +23,7 @@ const setup = async () => {
         let prviSelect = document.createElement('select'); prviSelectDiv.appendChild(prviSelect);
 
         let prviSelectPrvaOpcija = document.createElement('option');
-        prviSelectPrvaOpcija.innerText = 'Odaberite prodavnicu';
+        prviSelectPrvaOpcija.innerText = 'Odaberite prvu prodavnicu';
         prviSelect.options.add(prviSelectPrvaOpcija);
 
         prodavniceOpcije.forEach((prodavnicaJson) => {
@@ -62,7 +62,7 @@ const setup = async () => {
         let drugiSelect = document.createElement('select'); drugiSelectDiv.appendChild(drugiSelect);
 
         let drugiSelectPrvaOpcija = document.createElement('option');
-        drugiSelectPrvaOpcija.innerText = 'Odaberite prodavnicu';
+        drugiSelectPrvaOpcija.innerText = 'Odaberite drugu prodavnicu';
         drugiSelect.options.add(drugiSelectPrvaOpcija);
 
         prodavniceOpcije.forEach((prodavnicaJson) => {
@@ -84,6 +84,47 @@ const setup = async () => {
         }
 
         glavniDiv.appendChild(drugiDiv);
+
+        // === linija ===
+        let linija2 = document.createElement('hr'); linija2.className = 'linija';
+        glavniDiv.appendChild(linija2);
+
+        // === treca prodavnica ===
+        //treci div
+        let treciDiv = document.createElement('div'); treciDiv.className = 'kontejner';
+        thirdStore.Node = treciDiv;
+
+        //treci select
+        let treciSelectDiv = document.createElement('div'); treciSelectDiv.className = 'select_div';
+        treciDiv.appendChild(treciSelectDiv);
+
+        let treciSelect = document.createElement('select'); treciSelectDiv.appendChild(treciSelect);
+
+        let treciSelectPrvaOpcija = document.createElement('option');
+        treciSelectPrvaOpcija.innerText = 'Odaberite treću prodavnicu';
+        treciSelect.options.add(treciSelectPrvaOpcija);
+
+        prodavniceOpcije.forEach((prodavnicaJson) => {
+            let opcija = document.createElement('option');
+            opcija.value = prodavnicaJson.id;
+            opcija.innerText = prodavnicaJson.name;
+            treciSelect.options.add(opcija);
+        });
+
+        treciSelect.onchange = async (ev) => {
+            let ID = treciSelect.options[treciSelect.selectedIndex].value;
+            if(ID < 1) { return; }
+
+            treciSelect.remove(); //posle odabira izbrisi select
+            treciSelectDiv.remove();
+
+            thirdStore.ID = ID;
+            await thirdStore.reload();
+        }
+
+        glavniDiv.appendChild(treciDiv);
+
+
     } catch(ex) {
         formatError(ex);
     }
