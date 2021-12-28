@@ -161,7 +161,7 @@ export default class Configuration {
 
         let deloviCene = this.udeoCene();
         deloviCene.forEach((i) => {
-            let udeoProcenat = Math.floor(i.udeo * 100);
+            let udeoProcenat = Math.round(i.udeo * 100);
 
             let cenaDiv = document.createElement('div'); cenaDiv.className = 'cenaDiv';
             let procenatDiv = document.createElement('div'); procenatDiv.className = 'procenatDiv'; procenatDiv.innerText = `${i.komponenta} - ${udeoProcenat}%`;
