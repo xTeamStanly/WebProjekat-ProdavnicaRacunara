@@ -14,8 +14,8 @@ export default class Customer {
         this.Node = Node;
     }
 
-    static validacija = (jmbg, ime, srednjeime, prezime, pol, adresa) => {
-        if(!jmbg || !ime || !prezime || !pol || !adresa) { return false; }
+    static validacija = (jmbg, ime, srednjeime, prezime, pol) => {
+        if(!jmbg || !ime || !prezime || !pol) { return false; }
 
         let regexJmbg = new RegExp('^[1-9][0-9]{12}$'); //moze staticki posto je isti
         if(regexJmbg.test(jmbg) == false) { return false; };
@@ -26,7 +26,6 @@ export default class Customer {
         if(ime.length > 32 || prezime.length > 32) { return false; }
 
         if(srednjeime && srednjeime.length > 2) { return false; }
-        if(adresa && adresa.length > 65) { return false; }
 
         return true;
     }

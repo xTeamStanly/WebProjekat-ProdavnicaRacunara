@@ -57,6 +57,19 @@ export default class Configuration {
         return url;
     }
 
+    //prima json direkt sa servera
+    static cenaKonfiguracijeJson = (konfJson) => {
+        if(!konfJson || !konfJson.cpu || !konfJson.gpu || !konfJson.ram || !konfJson.mb || !konfJson.storage) { return 0; }
+
+        let cena = 0;
+
+        ['cpu', 'gpu', 'ram', 'mb', 'storage'].forEach(i => {
+            cena += Number.parseInt(konfJson[i].price);
+        });
+
+        return cena;
+    }
+
     async reload() {
         if(!this.Name) { return; }
         await this.fetchConfiguration();

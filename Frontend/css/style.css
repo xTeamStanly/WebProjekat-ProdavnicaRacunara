@@ -127,20 +127,18 @@ img {
     margin: 2px;
 }
 
-.flex_div > div {
+.flex_div .prodavacTabela {
     margin: 5px;
+    min-width: 320px;
+    min-height: 400px;
 }
 
-/* .flex_div > div > table > tr:first-of-type {
-    background-color: red;
-} */
+/* .flex_div > div > table > tr:first-of-type { background-color: red; } */
 
 /* table > tr > div {
     padding: 2px;
     background-color: lightcoral;
 } */
-
-
 
 .kontrola {
     width: 300px;
@@ -186,9 +184,7 @@ input:hover { font-weight: bold; border-radius: 10px; }
     text-shadow: 3px 3px white;
 }
 
-.poredjenjeCena {
-    text-align: center;
-}
+.poredjenjeCena { text-align: center; }
 
 .naslovCene {
     font-size: x-large;
@@ -212,7 +208,6 @@ input:hover { font-weight: bold; border-radius: 10px; }
     background-color: green;
 
     color: white;
-
 }
 
 .kontejner { padding: 5px; border-radius: 10px; }
