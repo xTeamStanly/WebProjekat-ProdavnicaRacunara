@@ -187,15 +187,22 @@ export default class Store {
 
         let dodajKupovinu = document.createElement('button');
         dodajKupovinu.innerText = "Dodaj kupovinu";
-        dodajKupovinu.onclick = async (ev) => {
-            console.log('dodaj kupovinu');
-            //todo render forma za dodavanje kupovine
-        }
-
-        //todo dodaj jos dugmica za kupovinu (filter dugme - forma)
-
+        dodajKupovinu.onclick = async (ev) => { await this.renderDodajKupovinu(); }
         kupovinaDiv.appendChild(dodajKupovinu);
+
+        let filtrirajKupovine = document.createElement('button');
+        filtrirajKupovine.innerText = "Filtriraj kupovine";
+        filtrirajKupovine.onclick = async (ev) => { await this.renderFiltrirajKupovine(); }
+        kupovinaDiv.appendChild(filtrirajKupovine);
+
+        let obrisiKupovinu = document.createElement('button');
+        obrisiKupovinu.innerText = "Obriši kupovine";
+        obrisiKupovinu.onclick = async (ev) => { await this.renderObrisiKupovine(); }
+        kupovinaDiv.appendChild(obrisiKupovinu);
+
         kontrole.appendChild(kupovinaDiv);
+
+
 
         this.Node.appendChild(kontrole);
     }
@@ -364,7 +371,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -423,7 +430,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -482,7 +489,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -600,7 +607,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -652,7 +659,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -743,7 +750,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -800,7 +807,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -856,7 +863,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -963,7 +970,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -1087,7 +1094,7 @@ export default class Store {
 
             let submit = document.createElement('input');
             submit.type = 'submit'; submit.className = 'submitDugme';
-            submit.value = 'Pošalji';
+            submit.value = 'Potvrdi';
             forma.appendChild(submit);
 
             formaDiv.appendChild(forma);
@@ -1189,7 +1196,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -1245,7 +1252,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -1338,7 +1345,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -1386,7 +1393,7 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
@@ -1406,7 +1413,7 @@ export default class Store {
             let jmbg = inputJMBG.value;
             let kontakt = inputKontakt.value;
             let regexJmbg = new RegExp('^[1-9][0-9]{12}$');
-            if(regexJmbg.test(jmbg) == false && kontakt && kontakt.length < 65) { formatError('Validacija neuspešna!'); return; }
+            if(regexJmbg.test(jmbg) == false || (kontakt && kontakt.length > 65)) { formatError('Validacija neuspešna!'); return; }
 
             try {
 
@@ -1466,10 +1473,508 @@ export default class Store {
 
         let submit = document.createElement('input');
         submit.type = 'submit'; submit.className = 'submitDugme';
-        submit.value = 'Pošalji';
+        submit.value = 'Potvrdi';
         forma.appendChild(submit);
 
         formaDiv.appendChild(forma);
         renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+
+    // === forma za dodavanje kupovine ===
+    async renderDodajKupovinu() {
+        if(!this.Node) { formatError('Null node!'); return; }
+
+        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+        let forma = document.createElement('form');
+        forma.appendChild(document.createElement('br'));
+        forma.onsubmit = async (ev) => {
+            ev.preventDefault();
+
+            let radnikJMBG = inputJMBGProdavac.value;
+            let kupacJMBG = inputJMBGKupac.value;
+            let konfIme = inputImeKonfiguracije.value;
+            let datum = inputDatum.valueAsDate;
+            let tip = selectTipPlacanja.value; if(tip == '') { tip = null; }
+
+            let regexJmbg = new RegExp('^[1-9][0-9]{12}$');
+            if(
+                regexJmbg.test(radnikJMBG) == false ||
+                regexJmbg.test(kupacJMBG) == false ||
+                konfIme.length > 64 ||
+                (tip && tip.length > 32)
+            ) { formatError('Validacija neuspešna!'); return; }
+
+            try {
+
+                let res = await fetch(`https://localhost:5001/Vendor/GetVendor/JMBG/${radnikJMBG}`);
+                if(!res.ok) { await formatErrorResponse(res); return; }
+                res = await res.json();
+                const vendorID = res.id;
+
+                res = await fetch(`https://localhost:5001/Customer/GetCustomer/JMBG/${kupacJMBG}`);
+                if(!res.ok) { await formatErrorResponse(res); return; }
+                res = await res.json();
+                const customerID = res.id;
+
+                res = await fetch(`https://localhost:5001/Configuration/GetConfiguration/Name/${konfIme}`);
+                if(!res.ok) { await formatErrorResponse(res); return; }
+                res = await res.json();
+                const configID = res.id;
+
+                let link = `https://localhost:5001/Purchase/AddPurchase/${customerID}/${vendorID}/${configID}`;
+
+
+                if(datum || tip) { link += '?'};
+
+                if(tip) { link += `paymentType=${tip}`; if(datum) { link += '&'; } }
+                if(datum) { link += `date=${datum.toUTCString()}`; }
+
+
+                res = await fetch(link, { method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({}) });
+                if(!res.ok) { await formatErrorResponse(res); return; }
+
+                alert("Uspešno!");
+                renderData(this.returnDobrodosli(), this.Node.querySelector('.platno'));
+            } catch(ex) {
+                formatError(ex);
+            }
+        }
+
+        let labelaJMBGKupac = document.createElement('label'); labelaJMBGKupac.innerText = "JMBG Kupca";
+        let inputJMBGKupac = document.createElement('input');
+        inputJMBGKupac.maxLength = 13;
+        forma.appendChild(labelaJMBGKupac);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputJMBGKupac);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaJMBGPRodavac = document.createElement('label'); labelaJMBGPRodavac.innerText = "JMBG Prodavca";
+        let inputJMBGProdavac = document.createElement('input');
+        inputJMBGProdavac.maxLength = 13;
+        forma.appendChild(labelaJMBGPRodavac);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputJMBGProdavac);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaImeKonfiguracije = document.createElement('label'); labelaImeKonfiguracije.innerText = "Naziv konfiguracije";
+        let inputImeKonfiguracije = document.createElement('input');
+        inputImeKonfiguracije.maxLength = 64;
+        forma.appendChild(labelaImeKonfiguracije);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputImeKonfiguracije);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaDatum = document.createElement('label'); labelaDatum.innerText = "Datum kupovine";
+        let inputDatum = document.createElement('input'); inputDatum.type = 'date';
+        forma.appendChild(labelaDatum);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(inputDatum);
+        forma.appendChild(document.createElement('br'));
+
+        let labelaTipPlacanja = document.createElement('label'); labelaTipPlacanja.innerText = "Tip plaćanja";
+        let selectTipPlacanja = document.createElement('input');
+        selectTipPlacanja.setAttribute('list', 'placanja');
+        let listaPlacanja = document.createElement('datalist'); listaPlacanja.id = 'placanja';
+        listaPlacanja.appendChild(this.napraviSelectOpciju('MasterCard', 'MasterCard'));
+        listaPlacanja.appendChild(this.napraviSelectOpciju('Cekovi', 'Cekovi'));
+        listaPlacanja.appendChild(this.napraviSelectOpciju('VISA ELECTRON', 'VISA ELECTRON'));
+        listaPlacanja.appendChild(this.napraviSelectOpciju('VISA', 'VISA'));
+        listaPlacanja.appendChild(this.napraviSelectOpciju('Keš', 'Keš'));
+        listaPlacanja.appendChild(this.napraviSelectOpciju('DINA', 'DINA'));
+        listaPlacanja.appendChild(this.napraviSelectOpciju('Maestro Card', 'Maestro Card'));
+        listaPlacanja.appendChild(this.napraviSelectOpciju('Uplatnica', 'Uplatnica'));
+        selectTipPlacanja.appendChild(listaPlacanja);
+        forma.appendChild(labelaTipPlacanja);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(selectTipPlacanja);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(document.createElement('br'));
+
+        let submit = document.createElement('input');
+        submit.type = 'submit'; submit.className = 'submitDugme';
+        submit.value = 'Potvrdi';
+        forma.appendChild(submit);
+
+        formaDiv.appendChild(forma);
+        renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+
+    // === forma za filtriranje kupovine ===
+    async renderFiltrirajKupovine() {
+        if(!this.Node) { formatError('Null node!'); return; }
+
+        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+        let forma = document.createElement('form');
+        forma.appendChild(document.createElement('br'));
+        forma.onsubmit = async (ev) => {
+            ev.preventDefault();
+
+            let vrednost = selectFilter.value;
+            if(vrednost == -1) { return; }
+
+            try {
+                await this.renderFiltrirajKupovineDrugiDeo(vrednost);
+            } catch(ex) {
+                formatError(ex);
+            }
+        }
+
+        let labelaFilter = document.createElement('label');
+        labelaFilter.innerText = "Filter";
+        let selectFilter = document.createElement('select');
+        forma.appendChild(labelaFilter);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(selectFilter);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(document.createElement('br'));
+
+        selectFilter.options.add(this.napraviSelectOpciju('Odaberite filter', '-1'));
+        selectFilter.options.add(this.napraviSelectOpciju('Kupac', 'customer'));
+        selectFilter.options.add(this.napraviSelectOpciju('Prodavac', 'vendor'));
+        selectFilter.options.add(this.napraviSelectOpciju('Konfiguracija', 'configuration'));
+        selectFilter.options.add(this.napraviSelectOpciju('Datum', 'date'));
+        selectFilter.options.add(this.napraviSelectOpciju('Način plaćanja', 'payment'));
+
+        let submit = document.createElement('input');
+        submit.type = 'submit'; submit.className = 'submitDugme';
+        submit.value = 'Potvrdi';
+        forma.appendChild(submit);
+
+        formaDiv.appendChild(forma);
+        renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+    async renderFiltrirajKupovineDrugiDeo(vrednost) {
+        if(!this.Node) { formatError('Null node!'); return; }
+
+        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+        let forma = document.createElement('form');
+        forma.appendChild(document.createElement('br'));
+        forma.onsubmit = async (ev) => {
+            ev.preventDefault();
+
+            let unosVrednost = null; let link = "";
+            if(vrednost === 'customer' || vrednost === 'vendor') {
+                unosVrednost = unos.value;
+                let regexJmbg = new RegExp('^[1-9][0-9]{12}$');
+                if(regexJmbg.test(unosVrednost) == false) { formatError('Validacija neuspešna!'); return; }
+
+                if(vrednost === 'customer') {
+                    link = `https://localhost:5001/Customer/GetCustomer/JMBG/${unosVrednost}`;
+                } else {
+                    link = `https://localhost:5001/Vendor/GetVendor/JMBG/${unosVrednost}`;
+                }
+
+            } else if(vrednost === 'configuration') {
+                unosVrednost = unos.value;
+                if(!unosVrednost || unosVrednost.length < 1 || unosVrednost.length > 64) { formatError('Validacija neuspešna!'); return; }
+                link = `https://localhost:5001/Configuration/GetConfiguration/Name/${unosVrednost}`;
+
+            } else if(vrednost === 'date') {
+                unosVrednost = unos.valueAsDate;
+                if(!unosVrednost) { formatError('Validacija neuspešna!'); return; }
+                unosVrednost = unosVrednost.toUTCString();
+
+            } else if(vrednost === 'payment') {
+                unosVrednost = unos.value;
+                if(!unosVrednost || unosVrednost.length < 1 || unosVrednost.length > 32) { formatError('Validacija neuspešna!'); return; }
+
+            } else { formatError("Nepoznat tip"); return; }
+
+            try {
+
+                if(!(vrednost === 'date' || vrednost === 'payment')) { //za ova dva nije potreban ID (fetch), znaci za sve ostalo jeste
+
+                    let fetched = await fetch(link);
+                    if(!fetched.ok) { await formatErrorResponse(fetched); return; }
+                    fetched = await fetched.json();
+
+                    unosVrednost = fetched.id;
+                }
+
+                let res = await fetch(`https://localhost:5001/Purchase/GetPurchases/${vrednost}/${unosVrednost}`);
+                if(!res.ok) { await formatErrorResponse(res); return; }
+                res = await res.json();
+
+                await this.renderFiltrirajKupovineTreciDeo(res);
+
+            } catch(ex) {
+                formatError(ex);
+            }
+        }
+
+        let labela = document.createElement('label');
+        let unos = document.createElement('input');
+
+        if(vrednost === 'customer') {
+            labela.innerText = 'JMBG Kupca';
+            unos.maxLength = 13;
+
+        } else if(vrednost === 'vendor') {
+            labela.innerText = 'JMBG Prodavca';
+            unos.maxLength = 13;
+
+        } else if(vrednost === 'configuration') {
+            labela.innerText = 'Naziv konfiguracije';
+            unos.maxLength = 64;
+
+        } else if(vrednost === 'date') {
+            labela.innerText = 'Naziv konfiguracije';
+            unos.type = 'date';
+
+        } else if(vrednost === 'payment') {
+            labela.innerText = "Tip plaćanja";
+            unos.maxLength = 32; unos.setAttribute('list', 'placanja');
+
+            let listaPlacanja = document.createElement('datalist'); listaPlacanja.id = 'placanja';
+            listaPlacanja.appendChild(this.napraviSelectOpciju('MasterCard', 'MasterCard'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('Cekovi', 'Cekovi'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('VISA ELECTRON', 'VISA ELECTRON'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('VISA', 'VISA'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('Keš', 'Keš'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('DINA', 'DINA'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('Maestro Card', 'Maestro Card'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('Uplatnica', 'Uplatnica'));
+            unos.appendChild(listaPlacanja);
+
+        } else { formatError("Nepoznat tip"); return; }
+
+        forma.appendChild(labela);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(unos);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(document.createElement('br'));
+
+        let submit = document.createElement('input');
+        submit.type = 'submit'; submit.className = 'submitDugme';
+        submit.value = 'Potvrdi';
+        forma.appendChild(submit);
+
+        formaDiv.appendChild(forma);
+        renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+    async renderFiltrirajKupovineTreciDeo(podaci) {
+        let final = document.createElement('div');
+        final.appendChild(document.createElement('br'));
+        let tabela = document.createElement('table');
+        final.appendChild(tabela);
+        tabela.className = 'prodavacTabela';
+
+        let kupacHeder = document.createElement('th'); kupacHeder.colSpan = 6;
+        kupacHeder.innerText = `Filtrirane kupovine`;
+        tabela.appendChild(kupacHeder);
+
+        // tabela sa hederima
+        let tabelaHederi = document.createElement('tr');
+        ['Matični broj prodavca', 'Matični broj kupca', 'Naziv konfiguracije', 'Cena', 'Datum', 'Način plaćanja'].forEach((i) => {
+            let kolona = document.createElement('th');
+            kolona.innerText = i;
+            tabelaHederi.appendChild(kolona);
+        });
+        tabela.append(tabelaHederi);
+
+        podaci.forEach(async (kupovina) => {
+            let red = document.createElement('tr');
+
+            let celijaMaticniProdavac = document.createElement('td');
+            let fetched = await fetch(`https://localhost:5001/Vendor/GetVendor/ID/${kupovina.vendorID}`);
+            if(!fetched.ok) { formatErrorResponse(fetched); return; }
+            fetched = await fetched.json();
+            celijaMaticniProdavac.innerText = fetched.jmbg;
+            red.appendChild(celijaMaticniProdavac);
+
+            let celijaMaticniKupac = document.createElement('td');
+            fetched = await fetch(`https://localhost:5001/Customer/GetCustomer/ID/${kupovina.customerID}`);
+            if(!fetched.ok) { formatErrorResponse(fetched); return; }
+            fetched = await fetched.json();
+            celijaMaticniKupac.innerText = fetched.jmbg;
+            red.appendChild(celijaMaticniKupac);
+
+            let celijaKonfiguracija = document.createElement('td');
+            fetched = await fetch(`https://localhost:5001/Configuration/GetConfiguration/ID/${kupovina.configurationID}`);
+            if(!fetched.ok) { formatErrorResponse(fetched); return; }
+            fetched = await fetched.json();
+            celijaKonfiguracija.innerText = fetched.name;
+            red.appendChild(celijaKonfiguracija);
+
+            let cena = Configuration.cenaKonfiguracijeJson(fetched);
+            let celijaCena = document.createElement('td');
+            celijaCena.innerHTML = cena;
+            red.appendChild(celijaCena);
+
+            let celijaDatum = document.createElement('td');
+            if(!kupovina.date) { celijaDatum.innerText = '/'; } else { celijaDatum.innerText = (new Date(kupovina.date)).toUTCString(); }
+            red.appendChild(celijaDatum);
+
+            let celijaNacinPlacanja = document.createElement('td');
+            if(!kupovina.paymentType) {celijaNacinPlacanja.innerText = '/'; } else { celijaNacinPlacanja.innerText = kupovina.paymentType; }
+            red.appendChild(celijaNacinPlacanja);
+
+            tabela.appendChild(red);
+        });
+
+        renderData(final, this.Node.querySelector('.platno'));
+    }
+
+    // === forma za brisanje kupovine ===
+    async renderObrisiKupovine() {
+        if(!this.Node) { formatError('Null node!'); return; }
+
+        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+        let forma = document.createElement('form');
+        forma.appendChild(document.createElement('br'));
+        forma.onsubmit = async (ev) => {
+            ev.preventDefault();
+
+            let vrednost = selectFilter.value;
+            if(vrednost == -1) { return; }
+
+            try {
+                await this.renderObrisiKupovineDrugiDeo(vrednost);
+            } catch(ex) {
+                formatError(ex);
+            }
+        }
+
+        let labelaFilter = document.createElement('label');
+        labelaFilter.innerText = "Filter";
+        let selectFilter = document.createElement('select');
+        forma.appendChild(labelaFilter);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(selectFilter);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(document.createElement('br'));
+
+        selectFilter.options.add(this.napraviSelectOpciju('Odaberite filter', '-1'));
+        selectFilter.options.add(this.napraviSelectOpciju('Kupac', 'customer'));
+        selectFilter.options.add(this.napraviSelectOpciju('Prodavac', 'vendor'));
+        selectFilter.options.add(this.napraviSelectOpciju('Konfiguracija', 'configuration'));
+        selectFilter.options.add(this.napraviSelectOpciju('Datum', 'date'));
+        selectFilter.options.add(this.napraviSelectOpciju('Način plaćanja', 'payment'));
+
+        let submit = document.createElement('input');
+        submit.type = 'submit'; submit.className = 'submitDugme';
+        submit.value = 'Potvrdi';
+        forma.appendChild(submit);
+
+        formaDiv.appendChild(forma);
+        renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+    async renderObrisiKupovineDrugiDeo(vrednost) {
+        if(!this.Node) { formatError('Null node!'); return; }
+
+        let formaDiv = document.createElement('div'); formaDiv.className = 'forma';
+        let forma = document.createElement('form');
+        forma.appendChild(document.createElement('br'));
+        forma.onsubmit = async (ev) => {
+            ev.preventDefault();
+
+            let unosVrednost = null; let link = "";
+            if(vrednost === 'customer' || vrednost === 'vendor') {
+                unosVrednost = unos.value;
+                let regexJmbg = new RegExp('^[1-9][0-9]{12}$');
+                if(regexJmbg.test(unosVrednost) == false) { formatError('Validacija neuspešna!'); return; }
+
+                if(vrednost === 'customer') {
+                    link = `https://localhost:5001/Customer/GetCustomer/JMBG/${unosVrednost}`;
+                } else {
+                    link = `https://localhost:5001/Vendor/GetVendor/JMBG/${unosVrednost}`;
+                }
+
+            } else if(vrednost === 'configuration') {
+                unosVrednost = unos.value;
+                if(!unosVrednost || unosVrednost.length < 1 || unosVrednost.length > 64) { formatError('Validacija neuspešna!'); return; }
+                link = `https://localhost:5001/Configuration/GetConfiguration/Name/${unosVrednost}`;
+
+            } else if(vrednost === 'date') {
+                unosVrednost = unos.valueAsDate;
+                if(!unosVrednost) { formatError('Validacija neuspešna!'); return; }
+                unosVrednost = unosVrednost.toUTCString();
+
+            } else if(vrednost === 'payment') {
+                unosVrednost = unos.value;
+                if(!unosVrednost || unosVrednost.length < 1 || unosVrednost.length > 32) { formatError('Validacija neuspešna!'); return; }
+
+            } else { formatError("Nepoznat tip"); return; }
+
+            try {
+
+                if(!(vrednost === 'date' || vrednost === 'payment')) { //za ova dva nije potreban ID (fetch), znaci za sve ostalo jeste
+
+                    let fetched = await fetch(link);
+                    if(!fetched.ok) { await formatErrorResponse(fetched); return; }
+                    fetched = await fetched.json();
+
+                    unosVrednost = fetched.id;
+                }
+
+                let res = await fetch(`https://localhost:5001/Purchase/GetPurchases/${vrednost}/${unosVrednost}`);
+                if(!res.ok) { await formatErrorResponse(res); return; }
+                res = await res.json();
+
+                await this.renderObrisiKupovineTreciDeo(res);
+
+            } catch(ex) {
+                formatError(ex);
+            }
+        }
+
+        let labela = document.createElement('label');
+        let unos = document.createElement('input');
+
+        if(vrednost === 'customer') {
+            labela.innerText = 'JMBG Kupca';
+            unos.maxLength = 13;
+
+        } else if(vrednost === 'vendor') {
+            labela.innerText = 'JMBG Prodavca';
+            unos.maxLength = 13;
+
+        } else if(vrednost === 'configuration') {
+            labela.innerText = 'Naziv konfiguracije';
+            unos.maxLength = 64;
+
+        } else if(vrednost === 'date') {
+            labela.innerText = 'Naziv konfiguracije';
+            unos.type = 'date';
+
+        } else if(vrednost === 'payment') {
+            labela.innerText = "Tip plaćanja";
+            unos.maxLength = 32; unos.setAttribute('list', 'placanja');
+
+            let listaPlacanja = document.createElement('datalist'); listaPlacanja.id = 'placanja';
+            listaPlacanja.appendChild(this.napraviSelectOpciju('MasterCard', 'MasterCard'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('Cekovi', 'Cekovi'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('VISA ELECTRON', 'VISA ELECTRON'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('VISA', 'VISA'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('Keš', 'Keš'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('DINA', 'DINA'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('Maestro Card', 'Maestro Card'));
+            listaPlacanja.appendChild(this.napraviSelectOpciju('Uplatnica', 'Uplatnica'));
+            unos.appendChild(listaPlacanja);
+
+        } else { formatError("Nepoznat tip"); return; }
+
+        forma.appendChild(labela);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(unos);
+        forma.appendChild(document.createElement('br'));
+        forma.appendChild(document.createElement('br'));
+
+        let submit = document.createElement('input');
+        submit.type = 'submit'; submit.className = 'submitDugme';
+        submit.value = 'Potvrdi';
+        forma.appendChild(submit);
+
+        formaDiv.appendChild(forma);
+        renderData(formaDiv, this.Node.querySelector('.platno'));
+    }
+    async renderObrisiKupovineTreciDeo(podaci) {
+        podaci.forEach(async (kupovina) => {
+            let fetched = await fetch(`https://localhost:5001/Purchase/DeletePurchase/ID/${kupovina.id}`, { method: 'delete' });
+            if(!fetched.ok) { formatErrorResponse(fetched); return; }
+        });
+
+        alert("Uspešno!");
+        renderData(this.returnDobrodosli(), this.Node.querySelector('.platno'));
     }
 }
