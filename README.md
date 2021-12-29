@@ -28,4 +28,6 @@ odnosno nešto što podseća na **kontrolnu tablu** neke prodavnice računara.
 ## 🧰 Rad
   1. Ovako izgleda aplikacija kada se pokrene. Postoje instance tri radnje, pa je potrebno odabrati
     posebno svaku radnju. Sve radnje se dinamički učitavaju iz baze i prikazuju u listi.
-    ![Slika1](assets/slika1.png){:height="10px" width="10px"}
+    <div style="width: 60%; height: 60%">
+      ![Slika1](assets/slika1.png)
+    </div>
