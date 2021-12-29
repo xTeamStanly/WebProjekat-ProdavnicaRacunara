@@ -25,7 +25,7 @@ i njihovih lokalnih (zaposlenih) radnika, tako da se svi potrebni podaci uzimaju
     - [Design](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/5.0.12)
     - [SqlServer](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/5.0.12)
 
-## 📖 O implementaciji
+## 📖 Kratko o implementaciji
   - [Backend](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/tree/main/Backend)
     > Za svaku klasu u [Models](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/tree/main/Backend/Models) folderu
     > napravljen je po jedan kontroler. Svaki kontroler implementira sve *CRUD* operacije. Za komplikovanije *LINQ* upite
