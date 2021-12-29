@@ -32,7 +32,9 @@ i njihovih lokalnih (zaposlenih) radnika, tako da se svi potrebni podaci uzimaju
     > korišćen je `Eager Loading` (`Include` i `ThenInclude`). Jedini kontroler koji nije pravljen specifično za neku klasu je
     > [`AllPartsController.cs`](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/blob/main/Backend/Controllers/Parts/AllPartsController.cs).
     > On služi da vrati sve potrebne podatke, samo ID i Naziv, za sve komponente kako bi se učitale u određenu formu da korisnik može da izabere koju želi.
-    >
+    > Najzanimljiviji kontroler jeste [kontroler za kupovine](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/blob/main/Backend/Controllers/PurchaseController.cs),
+    > koji može da filtrira sve kupovine u odnosu na neki parametar, primer: kupac (`customer`), prodavac (`vendor`), konfiguracija (`configuration`),
+    > datum (`date`) i tip plaćanja (`payment`).
 
   - [Frontend](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/tree/main/Frontend)
     > Podaci o instancama prodavnica se nalaze u posebnom [`data.js`](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/blob/main/Frontend/js/data.js) fajlu. Svaka prodavnica se nalazi u posebnom kontejner bloku.
@@ -91,7 +93,9 @@ i njihovih lokalnih (zaposlenih) radnika, tako da se svi potrebni podaci uzimaju
       mobilni telefon. Meni aplikacije je fleksibilan.<br><br>
       ![Slika11](assets/slika11.png)
 
-  12. Takođe prikaz delova konfiguracije je isto fleksibilan, ovako izgleda kada je razvučen.<br><br>
+  12. Takođe prikaz delova konfiguracije je isto fleksibilan, ovako izgleda kada je razvučen.
+      Za svaku komponentu prikazuje se logo proizvođača, a celu konfiguraciju se na dnu platna
+      prikazuje procentualni udeo cene svake komponente u odnosu na cenu cele konfiguracije.<br><br>
       ![Slika12](assets/slika12.png)
 
   13. Ovako izgleda prikaz delova konfiguracije kada je skupljen.<br><br>
