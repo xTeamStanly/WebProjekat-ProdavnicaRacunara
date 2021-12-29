@@ -16,7 +16,7 @@ i njihovih lokalnih (zaposlenih) radnika, tako da se svi potrebni podaci uzimaju
 
 ## 📝 Obaveštenja
 - Pre pokretanja dodati sve podatke u bazu: [`0 - SVE ZAJEDNO.sql`](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/blob/main/Podaci/0%20-%20SVE%20ZAJEDNO.sql)
-  - Ovaj sql upit je pravljen specifično za [Azure Data Studio](https://github.com/microsoft/azuredatastudio)
+  - Ovaj SQL upit je pravljen specifično za [Azure Data Studio](https://github.com/microsoft/azuredatastudio) i neće raditi na ostalim platformama
   - Zato je podeljen na delove od po maksimum 1000 _INSERT INTO_ operacija
   - Korišćen _connection string_ pokazuje na server `ProdavnicaRacunaraDB`, a baza se zove `ProdavnicaRacunara`
 - Backend
@@ -26,16 +26,21 @@ i njihovih lokalnih (zaposlenih) radnika, tako da se svi potrebni podaci uzimaju
     - [SqlServer](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/5.0.12)
 
 ## 📖 O implementaciji
+  - [Backend](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/tree/main/Backend)
+    > Za svaku klasu u [Models](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/tree/main/Backend/Models) folderu
+    > napravljen je po jedan kontroler. Svaki kontroler implementira sve *CRUD* operacije. Za komplikovanije *LINQ* upite
+    > korišćen je `Eager Loading` (`Include` i `ThenInclude`). Jedini kontroler koji nije pravljen specifično za neku klasu je
+    > [`AllPartsController.cs`](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/blob/main/Backend/Controllers/Parts/AllPartsController.cs).
+    > On služi da vrati sve potrebne podatke, samo ID i Naziv, za sve komponente kako bi se učitale u određenu formu da korisnik može da izabere koju želi.
+    >
 
-  - Backend
-    ```
-    backend je radjen
-    ```
-  - Frontend
-    ```
-    frontend je radjen
-    ```
-
+  - [Frontend](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/tree/main/Frontend)
+    > Podaci o instancama prodavnica se nalaze u posebnom [`data.js`](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/blob/main/Frontend/js/data.js) fajlu. Svaka prodavnica se nalazi u posebnom kontejner bloku.
+    > Svaki kontejner block mozemo da podelimo na 3 dela: ***deo za informacije***, ***deo za kontrole*** (meni) i ***platno*** gde se iscrtavaju
+    > odabrane forme. Skoro svaka klasa koja treba da se crta sadrži svojstvo `Node` ili `this.Node` koje ukazuje na mesto gde treba da se iscrta,
+    > uglavnom `Node` treba da ukazuje na `platno`, osim ako nije reč o nekom redu u tabeli ili delu tabele. Klasa `Store` sadrži svu potrebnu logiku
+    > za crtanje različitih formi za unos, uređivanje, brisanje, kao i za prikazivanje informacija. Korisniku se nikada ne prikazuju ID-jevi, već mu se
+    > prikazuju drugačije jedinstvene identifikacione vrednosti, primer: matični broj radnika ili kupca, serijski broj neke komponente ili naziv konfiguracije.
 
 ## 🧰 Primer rada (11 slika - neke slike su prilično velike)
   1. Ovako izgleda aplikacija kada se pokrene. Postoje instance tri radnje, pa je potrebno odabrati
