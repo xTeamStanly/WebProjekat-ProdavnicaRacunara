@@ -25,9 +25,57 @@ odnosno nešto što podseća na **kontrolnu tablu** neke prodavnice računara.
 
 
 
-## 🧰 Rad
+## 🧰 Primer rada (11 slika - neke slike su prilično velike)
   1. Ovako izgleda aplikacija kada se pokrene. Postoje instance tri radnje, pa je potrebno odabrati
-    posebno svaku radnju. Sve radnje se dinamički učitavaju iz baze i prikazuju u listi.
-    <div style="width: 60%; height: 60%">
-      ![Slika1](assets/slika1.png)
-    </div>
+     posebno svaku radnju. Sve prodavnice, odnosno njihova imena, se dinamički učitavaju iz baze i
+     prikazuju u padajućoj listi.
+     ![Slika1](assets/slika1.png)
+
+  2. Izbor prodavnice preko padajuće liste. Iz baze se pribavljaju informacije o odabranoj prodavnici i
+     pamte se u lokalnoj promenljivoj unutar [`data.js`](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/blob/main/Frontend/js/data.js) fajla. U njemu se nalaze promenljive za sve tri instance prodavnice.
+     ![Slika2](assets/slika2.png)
+
+  3. Izgled glavnog menija aplikacije. Odavde možete odabrati bilo koju od opcija vezanih za
+     prvu, drugu ili treću instancu prodavnice. Svaka instanca prodavnice ima drugačiju boju
+     pozadine i odvojena je isprekidanom linijom kako bi se lakše razlikovale. U gornjem delu
+     prostora za prodavnicu prikazane su informacije o istoj.
+     ![Slika3](assets/slika3.png)
+
+  4. Zarad demonstracije, odabrana je opcija `Nasumičan radnik u prodavnici`, rezultat te operacije
+     je prikazan ispod menija. Taj odeljak za prikaz se zove `platno`.
+     ![Slika4](assets/slika4.png)
+
+  5. Možemo odabrati drugu prodavnicu iz padajućeg menija namenjenog
+     drugoj instanci prodavnice.
+     ![Slika5](assets/slika5.png)
+
+  6. Pojavljuje se meni za drugu instancu prodavnice. Zarad primera, odabrana je
+     opcija `Dodaj kupca`. Posle odabira na `platnu` se iscrtava forma za dodavanje
+     novog kupca u bazu podataka.
+     ![Slika6](assets/slika6.png)
+
+  7. Možemo odabrati treću prodavnicu iz padajućeg menija namenjenog
+     trećoj instanci prodavnice.
+     ![Slika7](assets/slika7.png)
+
+  8. Pojavljuje se meni za treću instancu prodavnice. Zarad primera, odabrana je
+     opcija `Dodaj konfiguraciju`. Posle odabira na `platnu` se iscrtava forma za dodavanje
+     nove konfiguracije u bazu podataka.
+     ![Slika8](assets/slika8.png)
+
+  9. Forma za dodavanje nove konfiguracije dinamički uzima moguće delove iz baze podataka
+     i popunjava odgovarajuće padajuće liste tim delovima.
+     ![Slika9](assets/slika9.png)
+
+  10. Ovako izgleda aplikacija kada joj se dodeli veći, odnosno širi, prozor.
+      ![Slika10](assets/slika10.png)
+
+  11. Ovako izgleda aplikacija kada se nalazi u nekom užem prozoru, na primer
+      mobilni telefon. Meni aplikacije je fleksibilan.
+      ![Slika11](assets/slika11.png)
+
+  12. Takođe prikaz delova konfiguracije je isto fleksibilan, ovako izgleda kada je razvučen.
+      ![Slika12](assets/slika12.png)
+
+  13. Ovako izgleda prikaz delova konfiguracije kada je skupljen.
+      ![Slika13](assets/slika13.png)
