@@ -8,7 +8,11 @@
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?logo=javascript&logoColor=%23F7DF1E)
 
 Ovo je projekat za potrebe premeta "Web Programiranje" na trećoj godini Elektronskog Fakulteta u Nišu. Tema projekta je **prodavnica računara**,
-odnosno nešto što podseća na **kontrolnu tablu** neke prodavnice računara.
+odnosno nešto što podseća na **kontrolnu tablu** neke prodavnice računara. Omogućava kreiranje kupaca, prodavaca,
+konfiguracija, kupovina, kontakata kupaca i kontakata prodavca. Takođe mogu se brisati konfiguracije, kupovine,
+prodavci i kupci. Kada je reč o menjanju, mogu se menjati kupac i prodavac. Kupovine se mogu filtrirati po odabranom kriterijumu.
+Mogu se prikazati informacije o kupcu, radniku i konfiguraciji. Ništa od podataka se ne čuva lokalno, osim prodavnica
+i njihovih lokalnih (zaposlenih) radnika, tako da se svi potrebni podaci uzimaju iz baze dinamički.
 
 ## 📝 Obaveštenja
 - Pre pokretanja dodati sve podatke u bazu: [`0 - SVE ZAJEDNO.sql`](https://github.com/xTeamStanly/WebProjekat-ProdavnicaRacunara/blob/main/Podaci/0%20-%20SVE%20ZAJEDNO.sql)
@@ -23,6 +27,14 @@ odnosno nešto što podseća na **kontrolnu tablu** neke prodavnice računara.
 
 ## 📖 O implementaciji
 
+  - Backend
+    ```
+    backend je radjen
+    ```
+  - Frontend
+    ```
+    frontend je radjen
+    ```
 
 
 ## 🧰 Primer rada (11 slika - neke slike su prilično velike)
