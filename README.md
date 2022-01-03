@@ -90,11 +90,11 @@ i njihovih lokalnih (zaposlenih) radnika, tako da se svi potrebni podaci uzimaju
       ![Slika10](assets/slika10.png)
 
   11. Ovako izgleda aplikacija kada se nalazi u nekom užem prozoru, na primer
-      mobilni telefon. Meni aplikacije je fleksibilan.<br><br>
+      mobilnom telefonu. Meni aplikacije je fleksibilan.<br><br>
       ![Slika11](assets/slika11.png)
 
   12. Takođe prikaz delova konfiguracije je isto fleksibilan, ovako izgleda kada je razvučen.
-      Za svaku komponentu prikazuje se logo proizvođača, a celu konfiguraciju se na dnu platna
+      Za svaku komponentu prikazuje se logo proizvođača, a za celu konfiguraciju se na dnu platna
       prikazuje procentualni udeo cene svake komponente u odnosu na cenu cele konfiguracije.<br><br>
       ![Slika12](assets/slika12.png)
 
