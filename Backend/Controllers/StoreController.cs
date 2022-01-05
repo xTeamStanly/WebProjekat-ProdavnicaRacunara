@@ -19,11 +19,14 @@ namespace WebProjekat.Controller {
         public StoreController(ProdavnicaRacunaraContext context) { Context = context; }
 
         /* ------------------------------------ CREATE ------------------------------------ */
-        [Route("AddStore/{StoreName}/{StoreAddress}")]
+        [Route("AddStore")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AddStore(string StoreName, string StoreAddress) {
+        public async Task<ActionResult> AddStore([FromBody] Models.Helpers.StoreAdd bodyData) {
+
+            string StoreName = bodyData.StoreName;
+            string StoreAddress = bodyData.StoreAddress;
 
             if(string.IsNullOrWhiteSpace(StoreName) || StoreName.Length > 64) { return BadRequest("Invalid name!"); }
             if(string.IsNullOrEmpty(StoreAddress) || StoreAddress.Length > 64) { return BadRequest("Invalid address!"); }
@@ -47,16 +50,20 @@ namespace WebProjekat.Controller {
             }
         }
 
-        [Route("HireVendor/{StoreID}/{VendorID}")]
+        [Route("HireVendor")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> HireVendor(int StoreID, int VendorID) {
+        public async Task<ActionResult> HireVendor([FromBody] Models.Helpers.StoreHireVendor bodyData) {
 
-            if(StoreID <= 0) { return BadRequest("Invalid store ID!"); }
-            if(VendorID <= 0) { return BadRequest("Invalid vendor ID!"); }
+            int StoreID = bodyData.StoreID;
+            int VendorID = bodyData.VendorID;
 
             try {
+
+                if(StoreID <= 0) { return BadRequest("Invalid store ID!"); }
+                if(VendorID <= 0) { return BadRequest("Invalid vendor ID!"); }
+
                 if(await Context.Stores.FindAsync(StoreID) == null) { return BadRequest("Store not found!"); }
                 var prodavnica = await Context.Stores.Where(p => p.ID == StoreID).Include(p => p.Employees).FirstAsync();
 
@@ -75,11 +82,14 @@ namespace WebProjekat.Controller {
             }
         }
 
-        [Route("AddPurchase/{StoreID}/{PurchaseID}")]
+        [Route("AddPurchase")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AddPurchase(int StoreID, int PurchaseID) {
+        public async Task<ActionResult> AddPurchase([FromBody] Models.Helpers.StoreAddPurchase bodyData) {
+
+            int StoreID = bodyData.StoreID;
+            int PurchaseID = bodyData.PurchaseID;
 
             if(StoreID <= 0) { return BadRequest("Invalid store ID!"); }
             if(PurchaseID <= 0) { return BadRequest("Invalid purchase ID!"); }

@@ -286,10 +286,13 @@ export default class Store {
                 if(!res2.ok) { await formatErrorResponse(res2); return; }
                 res2 = await res2.json();
 
-                let res3 = await fetch(`https://localhost:5001/Store/HireVendor/${this.ID}/${res2.id}`, {
+                let res3 = await fetch(`https://localhost:5001/Store/HireVendor`, {
                     method: 'post',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({})
+                    body: JSON.stringify({
+                        storeID: this.ID,
+                        vendorID: res2.id
+                    })
                 });
                 if(!res3.ok) { await formatErrorResponse(res3); return; }
 
@@ -1039,10 +1042,17 @@ export default class Store {
                 if(Configuration.validacija(ime, cpuID, gpuID, ramID, mbID, storageID) == false) { formatError("Validacija neuspešna"); return; }
 
                 try {
-                    let res = await fetch(`https://localhost:5001/Configuration/AddConfiguration/${ime}/CPU/${cpuID}/GPU/${gpuID}/RAM/${ramID}/MB/${mbID}/STORAGE/${storageID}`, {
+                    let res = await fetch(`https://localhost:5001/Configuration/AddConfiguration`, {
                         method: 'post',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({})
+                        body: JSON.stringify({
+                            name: ime,
+                            cpuid: cpuID,
+                            gpuid: gpuID,
+                            ramid: ramID,
+                            mbid: mbID,
+                            storageid: storageID
+                        })
                     });
                     if(!res.ok) { await formatErrorResponse(res); return; }
 
@@ -1424,9 +1434,13 @@ export default class Store {
                     res = await res.json();
 
                     let vendorID = res.id;
-                    res = await fetch(`https://localhost:5001/VendorContacts/AddVendorContact/${vendorID}/${kontakt}`, {
+                    res = await fetch(`https://localhost:5001/VendorContacts/AddVendorContact`, {
                         method: 'post',
-                        body: JSON.stringify({})
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            vendorID: vendorID,
+                            vendorContact: kontakt
+                        })
                     });
 
                     if(!res.ok) { await formatErrorResponse(res); return; }
@@ -1438,9 +1452,13 @@ export default class Store {
                     res = await res.json();
 
                     let customerID = res.id;
-                    res = await fetch(`https://localhost:5001/CustomerContacts/AddCustomerContact/${customerID}/${kontakt}`, {
+                    res = await fetch(`https://localhost:5001/CustomerContacts/AddCustomerContact`, {
                         method: 'post',
-                        body: JSON.stringify({})
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            customerID: customerID,
+                            customerContact: kontakt
+                        })
                     });
 
                     if(!res.ok) { await formatErrorResponse(res); return; }
@@ -1521,7 +1539,7 @@ export default class Store {
                 res = await res.json();
                 const configID = res.id;
 
-                let link = `https://localhost:5001/Purchase/AddPurchase/${customerID}/${vendorID}/${configID}`;
+                let link = `https://localhost:5001/Purchase/AddPurchase`;
 
 
                 if(datum || tip) { link += '?'};
@@ -1530,7 +1548,15 @@ export default class Store {
                 if(datum) { link += `date=${datum.toUTCString()}`; }
 
 
-                res = await fetch(link, { method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({}) });
+                res = await fetch(link, {
+                    method: 'post',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        customerID: customerID,
+                        vendorID: vendorID,
+                        configID: configID
+                    })
+                });
                 if(!res.ok) { await formatErrorResponse(res); return; }
 
                 alert("Uspešno!");

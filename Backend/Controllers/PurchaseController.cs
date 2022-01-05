@@ -21,11 +21,15 @@ namespace WebProjekat.Controller {
         /* ------------------------------------ CREATE ------------------------------------ */
         //! ?paymentType=<TIP>
         //! ?date=<DATUM>, format po mogucstvu dd-mmm-yyyy
-        [Route("AddPurchase/{CustomerID}/{VendorID}/{ConfigurationID}")]
+        [Route("AddPurchase")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AddPurchase(int CustomerID, int VendorID, int ConfigurationID, string paymentType = null, DateTime? date = null) {
+        public async Task<ActionResult> AddPurchase([FromBody] Models.Helpers.PurchaseAdd bodyData, string paymentType = null, DateTime? date = null) {
+
+            int VendorID = bodyData.VendorID;
+            int CustomerID = bodyData.CustomerID;
+            int ConfigurationID = bodyData.ConfigID;
 
             if(CustomerID <= 0) { return BadRequest("Invalid customer ID!"); }
             if(VendorID <= 0) { return BadRequest("Invalid vendor ID!"); }

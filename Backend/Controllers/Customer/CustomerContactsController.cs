@@ -19,11 +19,14 @@ namespace WebProjekat.Controller.Customer {
         public CustomerContactsController(ProdavnicaRacunaraContext context) { Context = context; }
 
         /* ------------------------------------ CREATE ------------------------------------ */
-        [Route("AddCustomerContact/{CustomerID}/{CustomerContact}")]
+        [Route("AddCustomerContact")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AddCustomerContact(int CustomerID, string CustomerContact) {
+        public async Task<ActionResult> AddCustomerContact([FromBody] Models.Helpers.CustomerContactHelper bodyData) {
+
+            int CustomerID = bodyData.CustomerID;
+            string CustomerContact = bodyData.CustomerContact;
 
             if(CustomerID <= 0) { return BadRequest("Invalid ID!"); }
 

@@ -18,11 +18,18 @@ namespace WebProjekat.Controller {
         public ConfigurationController(ProdavnicaRacunaraContext context) { Context = context; }
 
         /* ------------------------------------ CREATE ------------------------------------ */
-        [Route("AddConfiguration/{Name}/CPU/{CPUID}/GPU/{GPUID}/RAM/{RAMID}/MB/{MBID}/STORAGE/{STORAGEID}")]
+        [Route("AddConfiguration")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AddConfiguration(string Name, int CPUID, int GPUID, int RAMID, int MBID, int STORAGEID) {
+        public async Task<ActionResult> AddConfiguration([FromBody] Models.Helpers.ConfigurationAddOrUpdate bodyData) {
+
+            string Name = bodyData.Name;
+            int CPUID = bodyData.CPUID;
+            int GPUID = bodyData.GPUID;
+            int RAMID = bodyData.RAMID;
+            int MBID = bodyData.MBID;
+            int STORAGEID = bodyData.STORAGEID;
 
             if(string.IsNullOrWhiteSpace(Name) || Name.Length > 64) { return BadRequest("Invalid name!"); }
 
