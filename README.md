@@ -104,3 +104,6 @@ i njihovih lokalnih (zaposlenih) radnika, tako da se svi potrebni podaci uzimaju
 
   13. Ovako izgleda prikaz delova konfiguracije kada je skupljen.<br><br>
       ![Slika13](assets/slika13.png)
+
+<br><br>
+#### 👋 Hvala na pažnji, Pozdrav! 👋
