@@ -266,7 +266,8 @@ export default class Store {
             let surname = inputPrezime.value;
             let gender = inputPol.value;
             let salary = Number.parseFloat(inputPlata.value);
-            let birthDate = inputRodj.valueAsDate.toISOString();
+            let birthDate = inputRodj.valueAsDate;
+            if(birthDate) { birthDate = inputRodj.valueAsDate.toISOString(); }
             let address = inputAdresa.value;
 
             let obj = { jmbg, name, middleName: middle, surname, gender, salary, birthDate, address, contacts: null, vendorPurchases: null }
@@ -687,7 +688,7 @@ export default class Store {
 
             let obj = { jmbg, name, middleName: middle, surname, gender }
 
-            if(Customer.validacija(jmbg, name, middle, surname, gender, address) == false) { formatError('Validacija neuspešna!'); return; }
+            if(Customer.validacija(jmbg, name, middle, surname, gender) == false) { formatError('Validacija neuspešna!'); return; }
 
             try {
                 let res1 = await fetch('https://localhost:5001/Customer/AddCustomer', {
