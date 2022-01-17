@@ -124,7 +124,6 @@ const setup = async () => {
 
         glavniDiv.appendChild(treciDiv);
 
-
     } catch(ex) {
         formatError(ex);
     }

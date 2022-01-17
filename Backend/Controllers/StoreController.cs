@@ -144,12 +144,9 @@ namespace WebProjekat.Controller {
 
                 Context.Stores.Where(p => p.ID == ID).Include(p => p.Employees);
 
-                var listaZaposlenih = (await Context.Stores
-                                            .Where(p => p.ID == ID)
-                                            .Select(p => p.Employees
-                                            ).FirstAsync())
-                                                .Select(p => new {p.ID, p.Name, p.Surname, p.Salary})
-                                                .ToList();
+                var listaZaposlenih = (await Context.Stores.Where(p => p.ID == ID).Select(p => p.Employees).FirstAsync())
+                                            .Select(p => new {p.ID, p.Name, p.Surname, p.Salary})
+                                            .ToList();
 
                 return Ok(new {
                     ID = prodavnica.ID,
@@ -178,15 +175,11 @@ namespace WebProjekat.Controller {
 
                 if(prodavnica == null) { return StatusCode(StatusCodes.Status404NotFound, "Store not found!"); }
 
-
                 Context.Stores.Where(p => p.Name == StoreName).Include(p => p.Employees);
 
-                var listaZaposlenih = (await Context.Stores
-                                            .Where(p => p.Name == StoreName)
-                                            .Select(p => p.Employees
-                                            ).FirstAsync())
-                                                .Select(p => new {p.ID, p.Name, p.Surname, p.Salary})
-                                                .ToList();
+                var listaZaposlenih = (await Context.Stores.Where(p => p.Name == StoreName).Select(p => p.Employees).FirstAsync())
+                                            .Select(p => new {p.ID, p.Name, p.Surname, p.Salary})
+                                            .ToList();
 
                 return Ok(new {
                     ID = prodavnica.ID,
@@ -218,12 +211,9 @@ namespace WebProjekat.Controller {
 
                 Context.Stores.Where(p => p.ID == ID).Include(p => p.Purchases);
 
-                var listaKupovina = (await Context.Stores
-                                            .Where(p => p.ID == ID)
-                                            .Select(p => p.Purchases
-                                            ).FirstAsync())
-                                                .Select(p => p.ID)
-                                                .ToList();
+                var listaKupovina = (await Context.Stores.Where(p => p.ID == ID).Select(p => p.Purchases).FirstAsync())
+                                            .Select(p => p.ID)
+                                            .ToList();
 
                 return Ok(new {
                     ID = prodavnica.ID,

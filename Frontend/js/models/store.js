@@ -281,7 +281,6 @@ export default class Store {
                 });
                 if(!res1.ok) { await formatErrorResponse(res1); return; }
 
-
                 let res2 = await fetch(`https://localhost:5001/Vendor/GetVendor/JMBG/${jmbg}`);
                 if(!res2.ok) { await formatErrorResponse(res2); return; }
                 res2 = await res2.json();

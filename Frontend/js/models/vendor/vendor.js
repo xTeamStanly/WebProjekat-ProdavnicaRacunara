@@ -54,7 +54,6 @@ export default class Vendor {
                 } else {
                     this[i] = data[i.toLowerCase()];
                 }
-
             });
         } catch(ex) { formatError(ex); }
     }
