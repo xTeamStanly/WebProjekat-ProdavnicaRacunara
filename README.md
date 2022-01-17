@@ -7,6 +7,8 @@
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?logo=javascript&logoColor=%23F7DF1E)
 
+[GH-Pages Demo](https://xteamstanly.github.io/WebProjekat-ProdavnicaRacunara/)
+
 Ovo je projekat za potrebe premeta "Web Programiranje" na trećoj godini Elektronskog Fakulteta u Nišu. Tema projekta je **prodavnica računara**,
 odnosno nešto što podseća na **kontrolnu tablu** neke prodavnice računara. Omogućava kreiranje kupaca, prodavaca,
 konfiguracija, kupovina, kontakata kupaca i kontakata prodavaca. Takođe mogu se brisati konfiguracije, kupovine,
